@@ -79,6 +79,7 @@ DATABASES = {
 # Application definition
 
 DJANGO_APPS = (
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -231,9 +232,21 @@ CACHES = {
 }
 
 
-# ECHART Settings
+# ECHART settings
 DJANGO_ECHARTS = {
     'echarts_version': '4.0.4',
     'lib_js_host':'cdnjs'
     #'local_host': '{STATIC_URL}echarts'
+}
+
+
+# Channels settings
+ASGI_APPLICATION = 'src.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
 }

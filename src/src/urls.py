@@ -25,6 +25,7 @@ urlpatterns = [
     # App url
     path('', index, name='index'),
     path('pages/', include('pages.urls')),
+    path('films/', include('films.urls')),
 
     # Build-in url
     path('accounts/', include('django.contrib.auth.urls')),

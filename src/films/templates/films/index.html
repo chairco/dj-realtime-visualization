@@ -1,0 +1,43 @@
+{# films/templates/index.html #}
+{% extends 'films/_base.html' %}
+
+{% block content %}
+
+<ul class="breadcrumb">
+{% block bar %}{{ block.super }}
+    <li class="active"><a href="{% url 'backend_demo' %}">Backend</a></li>
+    <li class="active">Select</li>
+{% endblock bar %}
+</ul>
+
+<p>What room would you like to enter?</p>
+
+<div class="form-group">
+  <input id="room-name-input" class="form-control" type="text" size="100"/>
+</div>
+
+<input id="room-name-submit" type="button" class="btn btn-primary" value="Enter"/>
+
+{% endblock content%}
+
+
+{% block extra_script%}
+<script>
+document.querySelector('#room-name-input').focus();
+document.querySelector('#room-name-input').onkeyup = function(e) {
+    if (e.keyCode === 13) {  // enter, return
+        document.querySelector('#room-name-submit').click();
+    }
+};
+
+document.querySelector('#room-name-submit').onclick = function(e) {
+    var roomName = document.querySelector('#room-name-input').value;
+    window.location.pathname = '/films/async/' + roomName + '/';
+};
+
+document.querySelector('#syncroom-name-submit').onclick = function(e) {
+    var roomName = document.querySelector('#room-name-input').value;
+    window.location.pathname = '/films/sync/' + roomName + '/';
+};
+</script>
+{% endblock extra_script %}

@@ -29,20 +29,20 @@
 
       <ul class="nav navbar-nav">
           <li class="dropdown">
-            <a href="#" class="{% if active == 'about' %}active{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">選單</a>
+            <a href="#" class="{% if active == 'about' %}active{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">即時訊息</a>
             <ul class="dropdown-menu">
-              <li><a href="#">選項一</a></li>
-              <li><a href="#">選項二</a></li>
+              <li><a href="{% url 'films_index' %}">WebSocket</a></li>
+              <li><a href="#">WebSocket</a></li>
             </ul>
           </li>
-          <li><a href="{% url 'backend_demo' %}">後端渲染範例</a></li>
-          <li><a href="{% url 'page_demo' %}">Page範例</a></li>
-          <li><a href="{% url 'namedcharts_demo' %}">NamedCharts範例</a></li>
+          <li><a href="{% url 'backend_demo' %}">後端渲染</a></li>
+          <li><a href="{% url 'page_demo' %}">Page</a></li>
+          <li><a href="{% url 'namedcharts_demo' %}">NamedCharts</a></li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-          <li><a href="https://github.com/kinegratii/django-echarts">github</a></li>
-          <li><a href="http://django-echarts.readthedocs.io/zh_CN/latest/index.html">docs</a></li>
+          <li><a href="https://github.com/kinegratii/django-echarts">Github</a></li>
+          <li><a href="http://django-echarts.readthedocs.io/zh_CN/latest/index.html">Docs</a></li>
 
           <form class="navbar-right navbar-form" method="post" action="{% url 'logout' %}">
               {% if user.is_authenticated %}
