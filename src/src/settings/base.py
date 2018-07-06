@@ -92,6 +92,8 @@ DJANGO_APPS = (
 THIRD_PARTY_APPS = (
     'django_echarts',
     'crispy_forms',
+    'bootstrap3',
+    'import_export',
 )
 
 LOCAL_APPS = (
@@ -250,3 +252,6 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+# Import-export
+IMPORT_EXPORT_USE_TRANSACTIONS = True

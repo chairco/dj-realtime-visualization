@@ -9,7 +9,6 @@
     {% endblock bar %}
     </ul>
 
-
     <div class="row row-offcanvas row-offcanvas-right">
         <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar">
             <div class="list-group">
@@ -25,7 +24,7 @@
             <p class="pull-right visible-xs">
                 <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
             </p>
-            <div class="alert alert-info" role="alert">後端渲染方式採用Django模板渲染頁面。切換左側菜單，會改變頁面URL。<br/>
+            <div class="alert alert-info" role="alert">後端渲染方式採用 Django 模板渲染頁面。切換左側菜單，會改變頁面 URL。<br/>
             當前配置：ECharts 4.0.4 +  svg 渲染</div>
             {% echarts_container echarts_instance %}
 
@@ -36,6 +35,6 @@
 
 
 {% block extra_script %}
-    {% echarts_js_dependencies echarts_instance %}
-    {% echarts_js_content echarts_instance %}
+  {% echarts_js_dependencies echarts_instance %}
+  {% echarts_js_content echarts_instance %}
 {% endblock extra_script %}

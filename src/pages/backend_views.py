@@ -4,8 +4,10 @@ from django.db.models import Count
 from pyecharts import Line, Pie, Page, Bar
 from django_echarts.datasets.charts import NamedCharts
 from django_echarts.views.backend import EChartsBackendView
+from django.db import models as m
 
 from . import models
+
 from .demo_data import FACTORY
 
 
@@ -45,10 +47,21 @@ class PageDemoView(EChartsBackendView):
         pie = Pie("設備分類", page_title='設備分類', width='100%')
         pie.add("設備分類", device_types, counters, is_label_show=True)
 
-        battery_lifes = models.Device.objects.values('name', 'battery_life')
-        names, lifes = fetch(battery_lifes, 'name', 'battery_life')
-        bar = Bar('設備電量', page_title='設備電量', width='100%')
-        bar.add("設備電量", names, lifes)
+        #battery_lifes = models.Device.objects.values('name', 'battery_life')
+        #names, lifes = fetch(battery_lifes, 'name', 'battery_life')
+        #bar = Bar('設備電量', page_title='設備電量', width='100%')
+        #bar.add("設備電量", names, lifes)
+        
+        gap_avg = models.FilmParameter.objects.aggregate(
+            avg1=m.Avg('gap1'),
+            avg2=m.Avg('gap2'),
+            avg3=m.Avg('gap3'),
+            avg4=m.Avg('gap4')
+        )
+        bar = Bar('間距(寬度)', page_title='間距', width='100%')
+        for i in range(1, 5):
+            bar.add(f"gap{i}", [f"gap{i}"], [gap_avg[f"avg{i}"]])
+
         page = Page.from_charts(pie, bar)
         return page
 

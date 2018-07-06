@@ -1,3 +1,4 @@
+#pages/models
 from django.db import models
 from django.utils import timezone
 
@@ -50,3 +51,23 @@ class TemperatureRecord(models.Model):
 
     def __str__(self):
         return 'Temperature Record'
+
+
+class FilmParameter(models.Model):
+    gap0 = models.FloatField(null=True, blank=True, verbose_name="左邊|粉色")
+    gap1 = models.FloatField(null=True, blank=True, verbose_name="粉色|橘色")
+    gap2 = models.FloatField(null=True, blank=True, verbose_name="橘色|黃色")
+    gap3 = models.FloatField(null=True, blank=True, verbose_name="黃色|綠色")
+    gap4 = models.FloatField(null=True, blank=True, verbose_name="綠色|藍色")
+    gap5 = models.FloatField(null=True, blank=True, verbose_name="藍色|右邊")
+    pink = models.FloatField(null=True, blank=True, verbose_name="粉色")
+    orange = models.FloatField(null=True, blank=True, verbose_name="橘色")
+    yellow = models.FloatField(null=True, blank=True, verbose_name="黃色")
+    green = models.FloatField(null=True, blank=True, verbose_name="綠色")
+    blue = models.FloatField(null=True, blank=True, verbose_name="藍色")
+    create_time = models.DateTimeField(default=timezone.now)
+
+
+    def __str__(self):
+        return "Film Parameter"
+
