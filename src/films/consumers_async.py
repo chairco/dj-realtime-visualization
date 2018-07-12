@@ -1,13 +1,18 @@
 # films/consumers.py
 # this is async version
 from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.db import database_sync_to_async
+
+from asgiref.sync import sync_to_async
 
 from .models import Message
 
 from django.conf import settings
 from django.contrib.auth.models import User
 
-from datetime import datetime
+import datetime
+
+import asyncio
 
 import json
 
@@ -35,21 +40,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-        now_time = datetime.now().strftime(settings.DATETIME_FORMAT)
         user = str(self.scope['user'])
-        
+        now_time = datetime.datetime.now().strftime("%Y年%m月%d日 %H:%M")
+
+        if not message:
+            return
         if not self.scope['user'].is_authenticated:
             try:
-                user = User.objects.get(username='guest')
+                user = await database_sync_to_async(User.objects.get)(username='guest')
             except Exception as e:
-                user = user.objects.create_user('guest', '', '12345678')
+                user = await database_sync_to_async(User.objects.create_user)('guest', '', '12345678')
+
         else:
             user = self.scope['user']
         
-        if not message:
-            return
-
-        Message.objects.create(
+        await database_sync_to_async(Message.objects.create)(
             user=user,
             message=message,
             group_name=self.room_group_name
@@ -71,6 +76,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = event['message']
         now_time = event['now_time']
         user = event['user']
+
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'message': message,

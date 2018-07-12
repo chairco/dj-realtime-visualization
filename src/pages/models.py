@@ -60,11 +60,13 @@ class FilmParameter(models.Model):
     gap3 = models.FloatField(null=True, blank=True, verbose_name="黃色|綠色")
     gap4 = models.FloatField(null=True, blank=True, verbose_name="綠色|藍色")
     gap5 = models.FloatField(null=True, blank=True, verbose_name="藍色|右邊")
+    
     pink = models.FloatField(null=True, blank=True, verbose_name="粉色")
     orange = models.FloatField(null=True, blank=True, verbose_name="橘色")
     yellow = models.FloatField(null=True, blank=True, verbose_name="黃色")
     green = models.FloatField(null=True, blank=True, verbose_name="綠色")
     blue = models.FloatField(null=True, blank=True, verbose_name="藍色")
+    
     create_time = models.DateTimeField(default=timezone.now)
 
 

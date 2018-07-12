@@ -15,6 +15,11 @@ django-echarts = "*"
 pyecharts = "==0.4.1"
 channels = "*"
 channels-redis = "*"
+"django-bootstrap3" = "*"
+django-import-export = "*"
+websocket-client = "*"
+schedule = "*"
+alog = "*"
 
 [dev-packages]
 

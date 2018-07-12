@@ -4,12 +4,16 @@
 {% block main_content %}
 {{ block.super }}
   <div class="row">
-    {% block content %}
-      {% block bar %}
-        <li><a href="{% url 'index' %}">首頁</a>
-            <span class="divider">/</span>
-        </li>
-      {% endblock bar %}
-    {% endblock content %}
+    <div class="col-6 col-md-1"></div>
+    <div class="col-6 col-md-10">
+        {% block content %}
+          {% block bar %}
+            <li><a href="{% url 'index' %}">首頁</a>
+                <span class="divider">/</span>
+            </li>
+          {% endblock bar %}
+        {% endblock content %}
+    </div>
+    <div class="col-6 col-md-1"></div>
   </div>
 {% endblock main_content %}
