@@ -1,0 +1,23 @@
+data = {
+    'pic': 'The Grey Album',
+    'pic_url': 'Danger Mouse',
+    'content_type': 1,
+    'rs232_time': '2018-07-27T13:13:00+08:00',
+    'film_gaps': 
+        {'gap0': 1.00, 'gap1': 1.00, 'gap2': 1.00,
+         'gap3': 1.00, 'gap4': 1.00, 'gap5': 1.00}
+    ,
+}
+
+
+data = {
+    'pic': 'The Grey Album',
+    'pic_url': 'Danger Mouse',
+    'content_type': 1,
+    'rs232_time': '2018-07-27T13:13:00+08:00',
+    {'film_gaps': 
+        [1.00, 1.00, 1.00, 1.00, 1.00, 1.00]}
+}
+
+
+{'pic':'The Grey Album', 'pic_url': 'Danger Mouse', 'content_type': 1, 'rs232_time': '2018-07-27T13:13:00+08:00', 'film_gaps':['0','0','0','0','0','0']}

@@ -22,7 +22,17 @@ class FilmView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        pass
+        """
+        create film record
+        :param format: Format of the film record to return to
+        :param requests: request object for creating film
+        :return: Returns a film record
+        """
+        serializer = FilmSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=ValueError):
+            serializer.create(validated_data=request.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.error_message, status=status.HTTP_400_BAD_REQUEST)
 
 
 class FilmGapView(APIView):

@@ -73,12 +73,6 @@ class Film(models.Model):
         blank=True, null=True,
         verbose_name=_('pic_url')
     )
-    #gap = models.OneToOneField(
-    #    'FilmGap',
-    #    related_name='film_gap',
-    #    verbose_name=_('film gap'),
-    #    on_delete=models.CASCADE,
-    #)
     content_type = models.ForeignKey(
         'FilmType',
         related_name='film_types',
@@ -90,7 +84,7 @@ class Film(models.Model):
         verbose_name=_('rs232 time')
     )
     create_time = models.DateTimeField(
-        default=timezone.now
+        default=timezone.now,
     )
 
     class Meta:
@@ -107,8 +101,8 @@ class FilmGap(models.Model):
     """
     film = models.OneToOneField(
         'Film',
-        related_name='film_gap',
-        verbose_name=_('Film'),
+        related_name='film_gaps',
+        verbose_name=_('FilmGaps'),
         on_delete=models.CASCADE,
     )
     gap0 = models.FloatField(null=True, blank=True, verbose_name="左邊|粉色")
@@ -123,7 +117,7 @@ class FilmGap(models.Model):
         verbose_name_plural = _('FilmGaps')
 
     def __str__(self):
-        return "FilmIndexGap"
+        return str(self.id)
 
 
 class FilmLen(models.Model):
