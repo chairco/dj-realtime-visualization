@@ -8,11 +8,12 @@
 
 
 {% block content %}
+
 <ul class="breadcrumb">
   {% block bar %}{{ block.super }}
-  <li class="active"><a href="{% url 'backend_demo' %}">Backend</a></li>
-  <li class="active">{{ room_name_json | replace:'"' }}</li>
-{% endblock bar %}
+    <li class="active"><a href="{% url 'backend_demo' %}">Backend</a></li>
+    <li class="active">{{ room_name_json | replace:'"' }}</li>
+  {% endblock bar %}
 </ul>
 
 <!-- chat -->

@@ -1,4 +1,4 @@
-{# pages/_base.html #}
+{# films/_base.html #}
 {% extends 'base.html' %}
 
 {% block main_content %}
@@ -6,6 +6,7 @@
   <div class="row">
     <div class="col-6 col-md-1"></div>
     <div class="col-6 col-md-10">
+    <div class="row">
         {% block content %}
           {% block bar %}
             <li><a href="{% url 'index' %}">首頁</a>
