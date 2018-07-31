@@ -5,7 +5,7 @@ from channels.db import database_sync_to_async
 
 from asgiref.sync import sync_to_async
 
-from .models import Message
+from films.models import Message
 
 from django.conf import settings
 from django.contrib.auth.models import User

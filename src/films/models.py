@@ -9,7 +9,7 @@ from django.utils import timezone
 
 class Message(models.Model):
     """
-    save user submitted
+    Save user submitted
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     group_name = models.TextField()
@@ -22,6 +22,7 @@ class Message(models.Model):
 
 class FilmType(models.Model):
     """
+    Film's type
     """
     content_type = models.CharField(
         max_length=20,
@@ -37,7 +38,7 @@ class FilmType(models.Model):
 
 class FilmSeq(models.Model):
     """
-    pairid
+    Assembly pair
     """
     seqid = models.UUIDField(
         default=uuid.uuid1,
@@ -164,4 +165,5 @@ class FilmWidth(models.Model):
 
     def __str__(self):
         return str(self.film)
+
 

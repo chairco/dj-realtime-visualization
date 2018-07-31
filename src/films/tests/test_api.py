@@ -2,7 +2,6 @@
 import requests
 import json
 
-
 url_mixin = 'http://localhost:8000/films/filmsmixin/'
 url_films = 'http://localhost:8000/films/films/'
 headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}

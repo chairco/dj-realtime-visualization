@@ -1,7 +1,7 @@
 # chats/routing.py
 from django.conf.urls import url
 
-from . import consumers_sync, consumers_async
+from films.ws import consumers_sync, consumers_async
 
 
 websocket_urlpatterns = [
