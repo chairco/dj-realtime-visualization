@@ -28,6 +28,9 @@ class FilmSerializer(serializers.ModelSerializer):
         film = Film.objects.create(**validated_data)
         FilmGap.objects.create(film=film, **gap_data)
         return film
+
+    def update(self, instance, validated_data):
+        pass
     
 
 class FilmSerializerGap(serializers.ModelSerializer):

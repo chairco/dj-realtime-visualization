@@ -21,7 +21,6 @@ payload = {
     },
 }
 
-
 data = json.dumps(payload)
 r = requests.post(url_films, json=payload)
 print(r.status_code)

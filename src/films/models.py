@@ -32,7 +32,7 @@ class FilmType(models.Model):
         verbose_name_plural = _('FilmTypes')
 
     def __str__(self):
-        return "FilmType"
+        return self.content_type
 
 
 class FilmSeq(models.Model):

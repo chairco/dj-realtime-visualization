@@ -17,7 +17,7 @@ class FilmList(mixins.ListModelMixin,
                 mixins.CreateModelMixin,
                 generics.GenericAPIView):
     """
-    List all code snippets, or create a new one.
+    List all code film, or create a new one.
     """
     queryset = Film.objects.all()
     serializer_class = FilmSerializer
@@ -51,6 +51,7 @@ class FilmView(APIView):
         :param requests: request object for creating film
         :return: Returns a film record
         """
+        print(request.data)
         if isinstance(request.data, dict):
             data = request.data
         else:

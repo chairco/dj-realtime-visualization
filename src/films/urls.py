@@ -1,6 +1,8 @@
 # films/urls.py
 from django.conf.urls import url
 
+from rest_framework.urlpatterns import format_suffix_patterns
+
 from . import views, films_views, api_views
 
 
@@ -20,3 +22,6 @@ urlpatterns = [
     url(r'^filmsgap/', api_views.FilmGapView.as_view(), name='film_gap_list'),
     url(r'^filmslen/', api_views.FilmLenView.as_view(), name='film_len_list'),
 ]
+
+
+urlpatterns = format_suffix_patterns(urlpatterns)
