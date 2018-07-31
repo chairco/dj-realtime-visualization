@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^gap/', films_views.FilmGapView.as_view(), name='film_gap'),
 
     # rest api
+    url(r'^filmsmixin/', api_views.FilmList.as_view(), name='films_mixin'),
     url(r'^films/', api_views.FilmView.as_view(), name='films_list'),
     url(r'^filmsgap/', api_views.FilmGapView.as_view(), name='film_gap_list'),
     url(r'^filmslen/', api_views.FilmLenView.as_view(), name='film_len_list'),

@@ -15,9 +15,11 @@ data = {
     'pic_url': 'Danger Mouse',
     'content_type': 1,
     'rs232_time': '2018-07-27T13:13:00+08:00',
-    {'film_gaps': 
-        [1.00, 1.00, 1.00, 1.00, 1.00, 1.00]}
+    ('film_gaps',1.00), ('film_gaps',1.00), 
+    ('film_gaps',1.00), ('film_gaps',1.00), 
+    ('film_gaps',1.00), 
+        
 }
 
 
-{'pic':'The Grey Album', 'pic_url': 'Danger Mouse', 'content_type': 1, 'rs232_time': '2018-07-27T13:13:00+08:00', 'film_gaps':['0','0','0','0','0','0']}
+(('pic','The Grey Album'),('pic_url','Danger Mouse'), ('content_type', 1), ('rs232_time','2018-07-27T13:13:00+08:00'), ('film_gaps',1.00), ('film_gaps',1.00), ('film_gaps',1.00), ('film_gaps',1.00), ('film_gaps',1.00)}

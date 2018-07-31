@@ -125,8 +125,8 @@ class FilmLen(models.Model):
     """
     film = models.OneToOneField(
         'Film',
-        related_name='film_len',
-        verbose_name=_('Film'),
+        related_name='film_lens',
+        verbose_name=_('FilmLens'),
         on_delete=models.CASCADE,
     )
     pink = models.FloatField(null=True, blank=True, verbose_name="粉色")
@@ -140,7 +140,7 @@ class FilmLen(models.Model):
         verbose_name_plural = _('FilmLens')
 
     def __str__(self):
-        return "FilmIndexLen"
+        return str(self.film)
 
 
 class FilmWidth(models.Model):
@@ -148,8 +148,8 @@ class FilmWidth(models.Model):
     """
     film = models.OneToOneField(
         'Film',
-        related_name='film_width',
-        verbose_name=_('Film'),
+        related_name='film_widths',
+        verbose_name=_('FilmWidth'),
         on_delete=models.CASCADE,
     )
     pink = models.FloatField(null=True, blank=True, verbose_name="粉色")
@@ -163,5 +163,5 @@ class FilmWidth(models.Model):
         verbose_name_plural = _('FilmWidths')
 
     def __str__(self):
-        return "FilmIndexWidth"
+        return str(self.film)
 
