@@ -18,15 +18,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls import url
 
-from pages.views import index
-from pages import views
+from pages.views.views import index
+from pages.views import views
 
 from rest_framework import routers
 
 
 router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
 router.register(r'filmgaps', views.FilmGapViewSet)
 
 
