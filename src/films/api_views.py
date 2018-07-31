@@ -69,6 +69,9 @@ class FilmGapView(APIView):
     """
     def get(self, format=None):
         """
+        Get all the filmgap records
+        :param format: Format of the filmgap records to return to
+        :return: Return a list of filmgap records
         """
         films_gap = FilmGap.objects.all()
         serializer = FilmSerializerGap(films_gap, many=True)
@@ -76,6 +79,10 @@ class FilmGapView(APIView):
 
     def post(self, request):
         """
+        create filmgap record
+        :param format: Format of the filmgap record to return to
+        :param requests: request object for creating filmgap
+        :return: Returns a filmgap record
         """
         serializer = FilmSerializerGap(data=request.data)
         if serializer.is_valid(raise_exception=ValueError):
@@ -90,12 +97,12 @@ class FilmLenView(APIView):
     """
     def get(self, format=None):
         """
+        Get all the filmlen records
+        :param format: Format of the filmlen records to return to
+        :return: Return a list of filmlen records
         """
         films_len = FilmLen.objects.all()
         serializer = FilmSerializerGap(films_len, many=True)
         return Response(serializer.data)
-
-    def post(self, request):
-        pass
 
 

@@ -1,3 +1,4 @@
+# films/serializers.py
 from rest_framework import serializers
 
 from films.models import Film, FilmGap
@@ -35,9 +36,8 @@ class FilmSerializerGap(serializers.ModelSerializer):
     class Meta:
         model = FilmGap
         fields = (
-            'gap0', 'gap1', 'gap2', 
+            'film','gap0', 'gap1', 'gap2', 
             'gap3', 'gap4', 'gap5',
-            'film',
         )
 
     def create(self, validated_data):
