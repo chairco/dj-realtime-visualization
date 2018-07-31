@@ -20,6 +20,8 @@ django-import-export = "*"
 websocket-client = "*"
 schedule = "*"
 alog = "*"
+djangorestframework = "*"
+requests = "*"
 
 [dev-packages]
 
