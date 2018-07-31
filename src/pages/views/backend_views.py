@@ -6,9 +6,9 @@ from django_echarts.datasets.charts import NamedCharts
 from django_echarts.views.backend import EChartsBackendView
 from django.db import models as m
 
-from . import models
+from pages import models
 
-from .demo_data import FACTORY
+from pages.demo_data import FACTORY
 
 
 class BackendEChartsTemplate(EChartsBackendView):

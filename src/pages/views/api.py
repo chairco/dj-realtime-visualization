@@ -1,15 +1,19 @@
 # pages/api.py
+from rest_framework import viewsets, serializers, permissions
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+from django.http import Http404
+
 from pages.models import FilmParameter
 from pages.serializers import FilmGapSerializer
 
-from django.http import HttpResponse, JsonResponse, Http404
-from django.views.decorators.csrf import csrf_exempt
 
-from rest_framework import status, viewsets, serializers, permissions
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
-from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
-from rest_framework.views import APIView
 
 
 @csrf_exempt
