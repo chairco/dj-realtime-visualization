@@ -84,6 +84,23 @@ class Film(models.Model):
         blank=True, null=True,
         verbose_name=_('rs232 time')
     )
+    
+    DISAS_CHOICES = (
+        ('0', _('PASS')),
+        ('1', _('FAIL')),
+    )
+    len_ret = models.CharField(
+        max_length=4,
+        blank=False,
+        choices=DISAS_CHOICES,
+        verbose_name=_('間距檢驗')
+    )
+    gap_ret = models.CharField(
+        max_length=4,
+        blank=False,
+        choices=DISAS_CHOICES,
+        verbose_name=_('長度檢驗')
+    )
     create_time = models.DateTimeField(
         default=timezone.now,
     )
