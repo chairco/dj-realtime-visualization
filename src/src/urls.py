@@ -20,12 +20,15 @@ from django.conf.urls import url
 
 from pages.views.views import index
 from pages.views import views
+from films.api.v1 import api_views
 
 from rest_framework import routers
 
 
-router = routers.DefaultRouter()
-router.register(r'filmgaps', views.FilmGapViewSet)
+v1 = routers.DefaultRouter()
+v1.register(r'gaps', api_views.FilmGapViewSet)
+v1.register(r'lens', api_views.FilmLenViewSet)
+#v1.register(r'gaps_old', views.FilmGapViewSet)
 
 
 urlpatterns = [
@@ -38,8 +41,8 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 
-    #rest url
-    path('restapi/', include(router.urls)),
+    # Rest url
+    path('api/v1/', include(v1.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 

@@ -10,6 +10,8 @@ payload = {
     'pic_url': '/20180731/00002.png',
     'content_type': 1,
     'rs232_time': '2018-07-27T13:13:00+08:00',
+    'len_ret': '1',
+    'gap_ret': '0',
     'film_gaps': {
         'gap0': 1.72,
         'gap1': 1.96,
