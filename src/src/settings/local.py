@@ -4,7 +4,7 @@ import logging.config
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 INTERNAL_IPS = ['127.0.0.1']
 

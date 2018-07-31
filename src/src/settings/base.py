@@ -58,7 +58,7 @@ if os.path.exists(env_file):
 SECRET_KEY = env('SECRET_KEY')
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Database
@@ -90,6 +90,7 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
+    'rest_framework',
     'django_echarts',
     'crispy_forms',
     'bootstrap3',
@@ -255,3 +256,12 @@ CHANNEL_LAYERS = {
 
 # Import-export
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+
+# Restful
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    #'DEFAULT_PERMISSION_CLASSES': [
+    #    'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    #]
+}

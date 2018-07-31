@@ -19,6 +19,15 @@ from django.conf import settings
 from django.conf.urls import url
 
 from pages.views import index
+from pages import views
+
+from rest_framework import routers
+
+
+router = routers.DefaultRouter()
+router.register(r'users', views.UserViewSet)
+router.register(r'groups', views.GroupViewSet)
+router.register(r'filmgaps', views.FilmGapViewSet)
 
 
 urlpatterns = [
@@ -30,6 +39,10 @@ urlpatterns = [
     # Build-in url
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
+
+    #rest url
+    path('restapi/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
 
