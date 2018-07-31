@@ -1,6 +1,7 @@
 #pages/models
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 
 from django_echarts.datasets.managers import AxisValuesQuerySet
 
@@ -67,9 +68,14 @@ class FilmParameter(models.Model):
     green = models.FloatField(null=True, blank=True, verbose_name="綠色")
     blue = models.FloatField(null=True, blank=True, verbose_name="藍色")
     
+    rs232_time = models.DateTimeField(blank=True, null=True, verbose_name=_('rs232 time'))
     create_time = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        verbose_name = _('FilmParameter')
+        verbose_name_plural = _('FilmParameters')
+        ordering = ('create_time',)
 
     def __str__(self):
-        return "Film Parameter"
+        return "Film Index Statistic Parameter"
 
