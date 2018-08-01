@@ -257,11 +257,21 @@ CHANNEL_LAYERS = {
 # Import-export
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
-# Restful
+# DRF Settings
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     #'DEFAULT_PERMISSION_CLASSES': [
     #    'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     #]
+    
+    # Django REST Framework 預設就是使用 JSON，所以不用設定。
+    # 使用 session 登入。
+    #'DEFAULT_AUTHENTICATION_CLASSES': (
+    #    'rest_framework.authentication.SessionAuthentication',
+    #),
+    # 必須登入才能使用。
+    #'DEFAULT_PERMISSION_CLASSES': (
+    #    'rest_framework.permissions.IsAuthenticated',
+    #),
 }

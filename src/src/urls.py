@@ -28,7 +28,6 @@ from rest_framework import routers
 v1 = routers.DefaultRouter()
 v1.register(r'gaps', api_views.FilmGapViewSet)
 v1.register(r'lens', api_views.FilmLenViewSet)
-#v1.register(r'gaps_old', views.FilmGapViewSet)
 
 
 urlpatterns = [
