@@ -41,11 +41,11 @@ class FilmSeq(models.Model):
     Assembly pair
     """
     seqid = models.UUIDField(
-        default=uuid.uuid1,
-        editable=False
+        default=uuid.uuid1
     )
     create_time = models.DateTimeField(
-        default=timezone.now
+        default=timezone.now,
+        editable=False
     )
     class Meta:
         verbose_name = _('FilmSeq')
@@ -53,7 +53,7 @@ class FilmSeq(models.Model):
         ordering = ('create_time',)
 
     def __str__(self):
-        return str(self.seqid)
+        return str(self.id)
 
 
 class Film(models.Model):
@@ -80,6 +80,22 @@ class Film(models.Model):
         verbose_name=_('FilmType'),
         on_delete=models.CASCADE,
     )
+    seq = models.ForeignKey(
+        'FilmSeq',
+        related_name='film_seqs',
+        verbose_name=_('FilmSeqs'),
+        on_delete=models.CASCADE,
+    )
+
+    CAM_CHOICES = (
+        (0, _('CAM0')),
+        (1, _('CAM1')),
+    )
+    cam = models.IntegerField(
+        choices=CAM_CHOICES,
+        verbose_name=_('CAM NO.'),
+    )
+
     rs232_time = models.DateTimeField(
         blank=True, null=True,
         verbose_name=_('rs232 time')
@@ -101,8 +117,10 @@ class Film(models.Model):
         choices=DISAS_CHOICES,
         verbose_name=_('長度檢驗')
     )
+
     create_time = models.DateTimeField(
         default=timezone.now,
+        editable=False
     )
 
     class Meta:

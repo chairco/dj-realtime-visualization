@@ -18,7 +18,8 @@ urlpatterns = [
 apipattern = [
     # rest api
     url(r'^films/', api_views.FilmView.as_view(), name='films_list'),
-    url(r'^filmsmixin/', api_views.FilmList.as_view(), name='films_mixin'),
+    url(r'^filmsmixin/', api_views.FilmListMixin.as_view(), name='films_mixin'),
+    url(r'^filmseq/', api_views.FilmSeqMixin.as_view(), name='films_seq_mixin'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns + apipattern)

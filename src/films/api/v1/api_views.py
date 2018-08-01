@@ -4,13 +4,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 
-from films.serializers import FilmSerializer, FilmGapSerializer, FilmLenSerializer
-from films.models import Film, FilmGap, FilmLen
+from films.serializers import (FilmSerializer, FilmGapSerializer, 
+                                FilmLenSerializer, FilmSeqSerializer)
+from films.models import Film, FilmGap, FilmLen, FilmSeq
 
 import json
 
 
-class FilmList(mixins.ListModelMixin,
+class FilmListMixin(mixins.ListModelMixin,
                 mixins.CreateModelMixin,
                 generics.GenericAPIView):
     """
@@ -18,6 +19,21 @@ class FilmList(mixins.ListModelMixin,
     """
     queryset = Film.objects.all()
     serializer_class = FilmSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class FilmSeqMixin(mixins.ListModelMixin,
+                mixins.CreateModelMixin,
+                generics.GenericAPIView):
+    """
+    """
+    queryset = FilmSeq.objects.all()
+    serializer_class = FilmSeqSerializer
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -47,7 +63,6 @@ class FilmView(APIView):
         :param requests: request object for creating film
         :return: Returns a film record
         """
-        print(request.data)
         if isinstance(request.data, dict):
             data = request.data
         else:

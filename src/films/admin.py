@@ -20,29 +20,24 @@ class FilmWidthInline(admin.TabularInline):
     extra = 1
 
 
-class FilmInline(admin.TabularInline):
-    model = Film
-    extra = 1
-
-
 @admin.register(FilmType)
 class FilmTypeAdmin(admin.ModelAdmin):
     list_display = ['content_type']
-    inlines = (FilmInline,)
 
 
 @admin.register(FilmSeq)
 class FilmSeqAdmin(admin.ModelAdmin):
-    list_display = ['seqid']
+    list_display = ['seqid', 'create_time']
 
 
 @admin.register(Film)
 class FilmAdmin(admin.ModelAdmin):
     list_display = [
         'filmid', 'pic', 'pic_url',
-        'content_type', 'rs232_time'
+        'content_type', 'seq', 'cam',
+        'rs232_time', 'create_time',
     ]
     inlines = (
         FilmGapInline, 
-        FilmLenInline, FilmWidthInline
+        FilmLenInline, FilmWidthInline, 
     )
