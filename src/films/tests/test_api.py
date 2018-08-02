@@ -3,16 +3,19 @@ import requests
 import json
 import random
 import alog
+import time
 from datetime import datetime
 
-r = requests.post('http://localhost:8000/films/filmseq/')
+#ip = '192.168.199.83:8000'
+ip = 'localhost:8000'
+r = requests.post(f"http://{ip}/films/filmseq/")
 resp = r.json()
 seqid = resp.get('id')
 alog.info(f"{r.status_code}, {r.json()}")
 
-
-url = 'http://localhost:8000/films/films/'
+url = f"http://{ip}/films/films/"
 headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+
 
 payload = {
     'pic': None,
@@ -41,9 +44,6 @@ cam0['film_gaps'] = {'gap0': 1.72, 'gap1': 1.96,'gap2': 1.97,
 cam0['film_lens'] = {'pink': 45.06, 'orange': 44.32, 'yellow': 45.23,
                     'green': 45.12, 'blue': 45.56}
 
-# insert_data_0
-r = requests.post(url, json=json.dumps(cam0))
-alog.info(f"{r.status_code}, {r.json()}")
 
 
 cam0 = payload.copy()
@@ -59,10 +59,13 @@ cam0['film_gaps'] = {'gap0': 2.12, 'gap1': 1.94,'gap2': 2.07,
 cam0['film_lens'] = {'pink': 45.36, 'orange': 44.12, 'yellow': 44.23,
                     'green': 45.12, 'blue': 45.76}
 
-# insert_data_1
+
+
+# insert_data_0
 r = requests.post(url, json=json.dumps(cam0))
 alog.info(f"{r.status_code}, {r.json()}")
 
-
-
+# insert_data_1
+r = requests.post(url, json=json.dumps(cam0))
+alog.info(f"{r.status_code}, {r.json()}")
 

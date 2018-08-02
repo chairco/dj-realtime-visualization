@@ -23,6 +23,7 @@ alog = "*"
 djangorestframework = "*"
 requests = "*"
 pytest-django = "*"
+django-rest-swagger = "*"
 
 [dev-packages]
 

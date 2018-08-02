@@ -94,6 +94,7 @@ THIRD_PARTY_APPS = (
     'django_echarts',
     'crispy_forms',
     'bootstrap3',
+    'rest_framework_swagger',
     'import_export',
 )
 
@@ -274,4 +275,5 @@ REST_FRAMEWORK = {
     #'DEFAULT_PERMISSION_CLASSES': (
     #    'rest_framework.permissions.IsAuthenticated',
     #),
+    'PageNumberPagination': 10
 }
