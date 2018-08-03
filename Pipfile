@@ -24,6 +24,7 @@ djangorestframework = "*"
 requests = "*"
 pytest-django = "*"
 django-rest-swagger = "*"
+dj-static = "*"
 
 [dev-packages]
 
