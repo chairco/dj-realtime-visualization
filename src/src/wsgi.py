@@ -11,12 +11,14 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
+from dj_static import Cling
+
 os.environ.setdefault(
     "DJANGO_SETTINGS_MODULE",
     "src.settings.local"
 )
 
-application = get_wsgi_application()
+application = Cling(get_wsgi_application())
 
 # Wrap werkzeug debugger if DEBUG is on
 from django.conf import settings
