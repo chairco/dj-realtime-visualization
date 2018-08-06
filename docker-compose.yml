@@ -1,0 +1,57 @@
+version: '3'
+services:
+
+    nginx:
+      container_name: nginx-container
+      build: ./nginx
+      restart: always
+      ports:
+        - "80:80"
+      volumes:
+        - api_data:/docker_api
+        - ./log:/var/log/nginx
+      depends_on:
+        - uwsgi
+
+    redis:
+      container_name: redis
+      image: redis
+      restart: always
+      command: ["redis-server"]
+      ports:
+        - "6379:6379"
+      volumes:
+        - redis-data:/data
+
+    migration:
+      build: ./src
+      command: bash -c "python manage.py makemigrations && python manage.py migrate"
+      volumes:
+        - .:/src
+    
+    app:
+      build: ./src
+      #command: bash -c "python manage.py runserver 0.0.0.0:8003"
+      command: bash -c "daphne -b 0.0.0.0 -p 8003 --proxy-headers src.asgi:application"
+      restart: always
+      ports:
+        - "8003:8003"
+      volumes:
+        - .:/src
+      depends_on:
+        - redis
+
+    uwsgi:
+      container_name: uwsgi-container
+      build: ./src  
+      restart: always
+      # command: uwsgi  --emperor uwsgi.ini         
+      command: uwsgi --ini src.ini         
+      ports:
+        - "8002:8000"
+      volumes:
+        - api_data:/docker_api
+
+volumes:
+    api_data:
+    redis-data:
