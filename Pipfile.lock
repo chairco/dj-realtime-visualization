@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a135ef3165d5bfdd48c7b270c6d0405d466bf0d6b8ab51e57a6ff278cbc29bd9"
+            "sha256": "d996b0fe12f2715cc7455621df8cd55fe01eee4a149fdac1853a850fd5b26d09"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -468,6 +468,14 @@
             ],
             "version": "==3.7.1"
         },
+        "pytest-asyncio": {
+            "hashes": [
+                "sha256:a962e8e1b6ec28648c8fe214edab4e16bacdb37b52df26eb9d63050af309b2a9",
+                "sha256:fbd92c067c16111174a1286bfb253660f1e564e5146b39eeed1133315cf2c2cf"
+            ],
+            "index": "pypi",
+            "version": "==0.9.0"
+        },
         "pytest-django": {
             "hashes": [
                 "sha256:434abfd2afe61b69a58af41e7339617f3aa33dc9a05e3b77fa5955204a61b865",
@@ -475,6 +483,13 @@
             ],
             "index": "pypi",
             "version": "==3.3.3"
+        },
+        "pytest-pythonpath": {
+            "hashes": [
+                "sha256:f3d46b0a8276e856f7dc4f70ca97b88be6fbcf52d57ce36e35057d502388265e"
+            ],
+            "index": "pypi",
+            "version": "==0.7.2"
         },
         "python-dotenv": {
             "hashes": [

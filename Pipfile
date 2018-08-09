@@ -25,6 +25,8 @@ requests = "*"
 pytest-django = "*"
 django-rest-swagger = "*"
 dj-static = "*"
+pytest-pythonpath = "*"
+pytest-asyncio = "*"
 
 [dev-packages]
 
