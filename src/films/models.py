@@ -102,8 +102,8 @@ class Film(models.Model):
     )
     
     DISAS_CHOICES = (
-        ('0', _('PASS')),
-        ('1', _('FAIL')),
+        ('0', _('FAIL')),
+        ('1', _('PASS')),
     )
     len_ret = models.CharField(
         max_length=4,
