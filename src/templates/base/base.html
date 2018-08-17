@@ -36,17 +36,21 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
 
       <ul class="nav navbar-nav">
+          <!-- menu 1-->
           <li class="dropdown">
             <a href="#" class="{% if active == 'about' %}active{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">即時訊息</a>
             <ul class="dropdown-menu">
-              <!--<li><a href="{% url 'films_index' %}">Create channel</a></li>-->
-              <li><a href="/films/dashboard/hello/">DashBoard</a></li>
-              <li><a href="/films/async/hello/">產出與良率</a></li>
+              <li><a href="/films/async/hello/">pv200 訊息</a></li>
             </ul>
           </li>
-          <!--<li><a href="{% url 'backend_demo' %}">後端渲染</a></li>-->
-          <li><a href="{% url 'page_demo' %}">貼合機統計視覺</a></li>
-          <!--<li><a href="{% url 'namedcharts_demo' %}">NamedCharts</a></li>-->
+          <!-- menu 2-->
+          <li class="dropdown">
+            <a href="#" class="{% if active == 'about' %}active{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">數據分析</a>
+            <ul class="dropdown-menu">
+              <li><a href="{% url 'gap_backend' %}">Gap Backend</a></li>
+              <li><a href="{% url 'len_backend' %}">Len Backend</a></li>
+            </ul>
+          </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
