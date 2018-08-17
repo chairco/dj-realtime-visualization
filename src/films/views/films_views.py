@@ -11,7 +11,8 @@ from django_echarts.views.backend import EChartsBackendView
 from pyecharts import Line, Pie, Page, Bar, Boxplot
 
 from films.models import FilmGap, FilmLen, FilmType, Film
-from pages.models import FilmParameter
+from films.load_gapdata import FACTORYGAP
+from films.load_lendata import FACTORYLEN
 
 import json
 
@@ -21,36 +22,72 @@ class FilmGapView(EChartsBackendView):
     template_name = 'films/films_gap.html'
 
     def get_echarts_instance(self, *args, **kwargs):
-        decimal_places = 3
-        film_datas = FilmGap.objects.all()
+        decimal_places = 1
+        film_datas = FilmGap.objects.all().order_by('id')[:200]
         ids = fetch(film_datas.values("id"), "id")
 
-        # boxplot
-        boxplot = Boxplot('間距', page_title='(盒鬚圖)', width='100%')        
-        x_axis = ['gap0', 'gap1', 'gap2', 'gap3', 'gap4', 'gap5']
-        y_axis = [
-            list(filter(lambda x:x>1, fetch(film_datas.values(f"gap{i}"), f"gap{i}"))) 
-            for i in range(1, 5)
-        ]
-        _yaxis = boxplot.prepare_data(y_axis)  # JSON serializable
-        boxplot.add(
-            "Film gaps",
-            x_axis, 
-            _yaxis,
-        )
-
-        attr = ids
-        bar_mix = Bar("Gap長度", page_title='(長條圖)', width='100%')
-    
-        for i in range(1, 5):
+        # bar mix
+        bar_mix = Bar("Gap 長度", page_title='(BarMix)', width='100%')
+        for i in range(0, 6):
             bar_data = fetch(film_datas.values(f"gap{i}"), f"gap{i}")
             bar_mix.add(
                 f"gap{i}",
-                attr,
+                ids,
                 list(map(lambda x:round(x, decimal_places), bar_data)),
                 is_stack=True,
                 is_datazoom_show=True
             )
 
-        page = Page.from_charts(boxplot, bar_mix)
+        page = Page.from_charts(bar_mix)
         return page
+
+
+class FilmLenView(EChartsBackendView):
+    echarts_instance_name = 'page'
+    template_name = 'films/films_gap.html'
+    len_map = ['pink', 'orange', 'yellow', 'green', 'blue']
+    
+    def get_echarts_instance(self, *args, **kwargs):
+        decimal_places = 1
+        film_datas = FilmLen.objects.all().order_by('id')[:200]
+        ids = fetch(film_datas.values("id"), "id")
+
+        # bar mix
+        bar_mix = Bar("Film 長度", page_title='(BarMix)', width='100%')
+        for i in range(0, 5):
+            bar_data = fetch(film_datas.values(f"{self.len_map[i]}"), f"{self.len_map[i]}")
+            bar_mix.add(
+                f"{self.len_map[i]}",
+                ids,
+                list(map(lambda x:round(x, decimal_places), bar_data)),
+                is_stack=True,
+                is_datazoom_show=True
+            )
+
+        page = Page.from_charts(bar_mix)
+        return page
+
+
+class GapBackendEChartsTemplate(EChartsBackendView):
+    template_name = 'films/backend_charts.html'
+
+    def get_echarts_instance(self, *args, **kwargs):
+        name = self.request.GET.get('name', 'bar')
+        return FACTORYGAP.create(name, num=200)
+
+    def get_template_names(self):
+        return super().get_template_names()
+
+
+class LenBackendEChartsTemplate(EChartsBackendView):
+    template_name = 'films/backend_charts.html'
+
+    def get_echarts_instance(self, *args, **kwargs):
+        name = self.request.GET.get('name', 'bar')
+        return FACTORYLEN.create(name, num=200)
+
+    def get_template_names(self):
+        return super().get_template_names()
+
+
+

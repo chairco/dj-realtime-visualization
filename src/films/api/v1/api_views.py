@@ -31,14 +31,26 @@ class FilmSeqMixin(mixins.ListModelMixin,
                 mixins.CreateModelMixin,
                 generics.GenericAPIView):
     """
+    a class based view(mixins) for creating and fetching film records
     """
     queryset = FilmSeq.objects.all()
     serializer_class = FilmSeqSerializer
 
     def get(self, request, *args, **kwargs):
+        """
+        Get all the film records
+        :param format: Format of the film records to return to
+        :return: Return a list of film records
+        """
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """
+        Create film record
+        :param format: Format of the film record to return to
+        :param requests: request object for creating film
+        :return: Returns a film record
+        """
         return self.create(request, *args, **kwargs)
 
 
@@ -58,7 +70,7 @@ class FilmView(APIView):
 
     def post(self, request):
         """
-        create film record
+        Create film record
         :param format: Format of the film record to return to
         :param requests: request object for creating film
         :return: Returns a film record
@@ -77,6 +89,9 @@ class FilmView(APIView):
 
 class FilmGapViewSet(viewsets.ReadOnlyModelViewSet):
     """
+    Get all the all film gap records
+    :param format: Format of the film records to return to
+    :return: Return a list of film gap records
     """
     queryset = FilmGap.objects.all()
     serializer_class = FilmGapSerializer
@@ -84,6 +99,9 @@ class FilmGapViewSet(viewsets.ReadOnlyModelViewSet):
 
 class FilmLenViewSet(viewsets.ReadOnlyModelViewSet):
     """
+    Get all the film len records
+    :param format: Format of the film len records to return to
+    :return: Return a list of film records
     """
     queryset = FilmLen.objects.all()
     serializer_class = FilmLenSerializer

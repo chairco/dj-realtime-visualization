@@ -18,6 +18,9 @@ import json
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
+    """
+    Consumer for Chat
+    """
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = f'chats_{self.room_name}'
@@ -83,3 +86,20 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'user': user,
             'now_time': now_time,
         }))
+
+
+class FilmConsumer(AsyncWebsocketConsumer):
+    """
+    """
+    async def connect(self):
+        pass
+
+    async def disconnect(self, close_code):
+        pass
+
+    async def receive(self, text_data):
+        pass
+
+    async def message(self, event):
+        pass
+

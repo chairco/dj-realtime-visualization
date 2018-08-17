@@ -129,7 +129,7 @@ class Film(models.Model):
         ordering = ('create_time',)
 
     def __str__(self):
-        return str(self.filmid)
+        return f"{str(self.filmid)} <{str(self.create_time)}>"
 
 
 class FilmGap(models.Model):

@@ -28,6 +28,9 @@ def syncroom(request, room_name):
 
 
 def dashboard(request, room_name):
+    """
+    TODO, NOT OK
+    """
     chat_messages = Message.objects.filter(group_name=room_name).order_by("created")[:100]
     return render(request, 'films/dashboard.html', {
         'chat_messages': chat_messages,

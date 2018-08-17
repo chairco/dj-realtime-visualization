@@ -1,7 +1,8 @@
 {% extends 'films/_base.html' %}
 {% load echarts %}
 
-{% block main_content %}   
+
+{% block content %}   
 <div class="alert alert-info" role="alert">提示訊息</div>
 <div class="row">
   {% for chart in page %}
@@ -15,7 +16,7 @@
     </div>
   {% endfor %}
 </div>
-{% endblock main_content %}
+{% endblock content %}
 
 
 {% block extra_script %}
