@@ -1,22 +1,29 @@
 #-*- coding: utf-8 -*-
-from borax.fetch import fetch
-from pyecharts import Bar, Pie
+import datetime
+import itertools
 
-from films.models import FilmGap
+from borax.fetch import fetch
+from pyecharts import Bar, Pie, Line, Grid, Style
+
+from films.models import FilmGap, Film
 from films.factory import ChartFactory
+
+from django.db.models import Count, Q
 
 
 FACTORYGAP = ChartFactory()
 
 
 @FACTORYGAP.collect('bar')
-def create_bar_mix(num=200):
-    decimal_places = 1
-    film_datas = FilmGap.objects.all().order_by('id')[:num]
+def create_bar_mix(num):
+    decimal_places = 2
+    film_datas = FilmGap.objects.all().order_by('-id')[:num]
     ids = fetch(film_datas.values("id"), "id")
-    bar_mix = Bar("Gap 長度", page_title='(BarMix)', width='100%')
+    ids.reverse()
+    bar_mix = Bar("間距(gap)", page_title='(BarMix)', width='100%')
     for i in range(0, 6):
         bar_data = fetch(film_datas.values(f"gap{i}"), f"gap{i}")
+        bar_data.reverse() # reverse data, change order
         bar_mix.add(
             f"gap{i}",
             ids,
@@ -30,10 +37,102 @@ def create_bar_mix(num=200):
 
 @FACTORYGAP.collect('pie')
 def create_pie():
-    pass
+    film_datas = FilmGap.objects.all()
+    spec = {
+        'gap0': [1, 1.5], 'gap1': [1.8, 2.3], 'gap2': [1.8, 2.3], 
+        'gap3': [1.8, 2.3], 'gap4': [1.8, 2.3], 'gap5': [1, 1.5]
+    }
+    pie = Pie('fail/pass ration', "數據", title_pos='center')
+    style = Style()
+    pie_style = style.add(
+        label_pos="center",
+        is_label_show=True,
+        label_text_color=None
+    )
+    static = {}
+    for i in range(0, 6):
+        gap = f"gap{i}"
+        lower, upper = spec.get(gap)
+        if i == 0:
+            fail_count = FilmGap.objects \
+                .annotate(num=Count(gap)) \
+                .filter(Q(gap0__gte=upper)|Q(gap0__lte=lower))
+            center = [20, 30]
+        elif i == 1:
+            fail_count = FilmGap.objects \
+                .annotate(num=Count(gap)) \
+                .filter(Q(gap1__gte=upper)|Q(gap1__lte=lower))
+            center = [40, 30]
+        elif i == 2:
+            fail_count = FilmGap.objects \
+                .annotate(num=Count(gap)) \
+                .filter(Q(gap2__gte=upper)|Q(gap2__lte=lower))
+            center = [60, 30]
+        elif i == 3:
+            fail_count = FilmGap.objects \
+                .annotate(num=Count(gap)) \
+                .filter(Q(gap3__gte=upper)|Q(gap3__lte=lower))
+            center = [80, 30]
+        elif i == 4:
+            fail_count = FilmGap.objects \
+                .annotate(num=Count(gap)) \
+                .filter(Q(gap4__gte=upper)|Q(gap4__lte=lower))
+            center = [20, 70]
+        elif i == 5:
+            fail_count = FilmGap.objects \
+                .annotate(num=Count(gap)) \
+                .filter(Q(gap5__gte=upper)|Q(gap5__lte=lower))
+            center=[40, 70]
+        
+        static.setdefault(gap, len(fail_count))
+        f = (static.get(gap) / len(film_datas)) * 100
+        p = 100 - f
+        ration = [f"{f:.1f}", f"{p:.1f}"]
+        
+        if i == 1:
+            pie.add(gap, [gap, ""], ration, center=center, radius=[20, 26],
+                    **pie_style, legend_pos='left')
+        elif i == 5:
+            pie.add(gap, [gap, ""], ration, center=center, radius=[20, 26],
+                    **pie_style, is_legend_show=True, legend_top="center")
+        else:
+            pie.add(gap, [gap, ""], ration, center=center, radius=[20, 26],
+                    **pie_style)
+    
+    pie.renderer = 'svg'
+    return pie
 
 
+@FACTORYGAP.collect('mix')
+def create_mix(hours):
+    latest_film = Film.objects.order_by('-rs232_time')[0]
+    last_time = latest_film.rs232_time - datetime.timedelta(hours=hours) #latest 24h
+    film_datas = Film.objects.filter(rs232_time__gte=last_time)
+    grouped = itertools.groupby(film_datas, lambda f: f.rs232_time.strftime("%Y-%m-%d %H:%M"))
+    data_filter = {day: len(list(g)) for day, g in grouped}
 
+    attr = list(data_filter.keys())
 
+    cam0 = list(data_filter.values())
+    cam1 = [10, 25, 8, 60, 20, 80]
+    
+    bar = Bar("產能柱狀圖", height=720)
+    bar.add("cam0", attr, cam0, is_stack=True)
 
+    line = Line("產能折線圖", title_top="50%")
+    line.add(
+        "cam0",
+        attr,
+        cam0,
+        mark_point=["max", "min"],
+        mark_line=["average"],
+        legend_top="50%",
+    )
+
+    grid = Grid()
+    grid.add(bar, grid_bottom="60%")
+    grid.add(line, grid_top="60%")
+    grid.render()
+
+    return grid
 

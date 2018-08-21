@@ -73,7 +73,11 @@ class GapBackendEChartsTemplate(EChartsBackendView):
 
     def get_echarts_instance(self, *args, **kwargs):
         name = self.request.GET.get('name', 'bar')
-        return FACTORYGAP.create(name, num=200)
+        if name == 'bar':
+            return FACTORYGAP.create(name, num=200)
+        elif name == 'mix':
+            return FACTORYGAP.create(name, hours=24)
+        return FACTORYGAP.create(name)
 
     def get_template_names(self):
         return super().get_template_names()
@@ -84,7 +88,9 @@ class LenBackendEChartsTemplate(EChartsBackendView):
 
     def get_echarts_instance(self, *args, **kwargs):
         name = self.request.GET.get('name', 'bar')
-        return FACTORYLEN.create(name, num=200)
+        if name == 'bar':
+            return FACTORYLEN.create(name, num=200)
+        return FACTORYLEN.create(name)
 
     def get_template_names(self):
         return super().get_template_names()

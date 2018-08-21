@@ -46,6 +46,14 @@ class FilmGapAdmin(admin.ModelAdmin):
     ]
 
 
+@admin.register(FilmLen)
+class FilmLenAdmin(admin.ModelAdmin):
+    list_display = [
+        'id', 'pink', 'orange', 'yellow',
+        'green', 'blue', 'film'
+    ]
+
+
 @admin.register(Film)
 class FilmAdmin(admin.ModelAdmin):
     list_display = [

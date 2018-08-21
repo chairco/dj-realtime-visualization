@@ -14,8 +14,14 @@ class ChartFactory:
 
     def create(self, name, **kwargs):
         num = kwargs.get('num')
+        hours = kwargs.get('hours')
         if name in self._func:
-            chart = self._func[name](num)
+            if name == 'bar':
+                chart = self._func[name](num)
+            elif name == 'mix':
+                chart = self._func[name](hours)
+            elif name == 'pie':
+                chart = self._func[name]()
             return chart
         else:
             raise ValueError(f'No Chart build for {name}')

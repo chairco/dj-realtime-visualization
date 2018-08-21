@@ -4,7 +4,7 @@
 {% block content %}
     <ul class="breadcrumb">
     {% block bar %}{{ block.super }}
-        <li class="active"><a href="#">BackEnd</a></li>
+        <li class="active"><a href="#">{{ view|split }}</a></li>
         <li class="active">{{ echarts_instance|split }}</li>
     {% endblock bar %}
     </ul>
@@ -14,6 +14,9 @@
             <div class="list-group">
                 <a href="?name=bar" class="list-group-item">Bar</a>
                 <a href="?name=pie" class="list-group-item">Pie</a>
+                {% if view|split == "GapBackendEChartsTemplate" %}
+                    <a href="?name=mix" class="list-group-item">產量</a>
+                {% endif %}
             </div>
         </div>
         <!--/.sidebar-offcanvas-->
@@ -21,8 +24,8 @@
             <p class="pull-right visible-xs">
                 <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
             </p>
-            <div class="alert alert-info" role="alert">圖形化。<br/>
-            設置：ECharts 4.0.4 + svg </div>
+            <div class="alert alert-info" role="alert">
+            Bar 預設 200 筆資料，Pie 預設全部資料，Line 預設過去 24 小時，產能預設過去 24 小時。</br>圖形引擎採用: ECharts 4.0.4 + svg </div>
             {% echarts_container echarts_instance %}
 
         </div>

@@ -129,7 +129,7 @@ class Film(models.Model):
         ordering = ('create_time',)
 
     def __str__(self):
-        return f"{str(self.filmid)} <{str(self.create_time)}>"
+        return str(self.pic)
 
 
 class FilmGap(models.Model):
@@ -176,7 +176,7 @@ class FilmLen(models.Model):
         verbose_name_plural = _('FilmLens')
 
     def __str__(self):
-        return str(self.film)
+        return str(self.id)
 
 
 class FilmWidth(models.Model):
