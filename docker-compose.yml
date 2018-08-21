@@ -27,17 +27,18 @@ services:
       build: ./src
       command: bash -c "python manage.py makemigrations && python manage.py migrate"
       volumes:
-        - .:/src
+        - api_data:/docker_api
     
     app:
       build: ./src
       #command: bash -c "python manage.py runserver 0.0.0.0:8003"
+      #command: bash -c "daphne -u daphne.sock --proxy-headers src.asgi:application"
       command: bash -c "daphne -b 0.0.0.0 -p 8003 --proxy-headers src.asgi:application"
       restart: always
       ports:
         - "8003:8003"
       volumes:
-        - .:/src
+        - api_data:/docker_api
       depends_on:
         - redis
 
@@ -45,7 +46,7 @@ services:
       container_name: uwsgi-container
       build: ./src  
       restart: always
-      # command: uwsgi  --emperor uwsgi.ini         
+      #command: uwsgi  --emperor uwsgi.ini         
       command: uwsgi --ini src.ini         
       ports:
         - "8002:8000"
