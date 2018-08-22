@@ -47,6 +47,7 @@
           <li class="dropdown">
             <a href="#" class="{% if active == 'about' %}active{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">數據分析</a>
             <ul class="dropdown-menu">
+              <li><a href="{% url 'dash_backend' %}">生產數據</a></li>
               <li><a href="{% url 'gap_backend' %}">貼合數據</a></li>
               <li><a href="{% url 'len_backend' %}">料況數據</a></li>
             </ul>
