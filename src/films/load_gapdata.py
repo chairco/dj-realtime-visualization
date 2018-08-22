@@ -49,7 +49,7 @@ def create_pie():
         'gap0': [1, 1.5], 'gap1': [1.8, 2.3], 'gap2': [1.8, 2.3], 
         'gap3': [1.8, 2.3], 'gap4': [1.8, 2.3], 'gap5': [1, 1.5]
     }
-    pie = Pie('fail/pass ration', "數據", title_pos='center')
+    pie = Pie('fail/pass ration', "數據", title_pos='center', width='100%')
     style = Style()
     pie_style = style.add(
         label_pos="center",
@@ -109,7 +109,7 @@ def create_pie():
     return pie
 
 
-@FACTORYGAP.collect('mix')
+@FACTORYGAP.collect('dash')
 def create_mix(hours):
     """
     create bar+line to show yield rate in the time interval
@@ -142,7 +142,7 @@ def create_mix(hours):
         is_datazoom_show=True,
     )
 
-    grid = Grid()
+    grid = Grid(width='100%')
     grid.add(bar, grid_bottom="60%")
     grid.add(line, grid_top="60%")
     grid.render()

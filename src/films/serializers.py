@@ -8,7 +8,7 @@ class FilmGapSerializer(serializers.ModelSerializer):
     class Meta:
         model = FilmGap
         fields = (
-            'gap0', 'gap1', 'gap2', 
+            'id', 'gap0', 'gap1', 'gap2', 
             'gap3', 'gap4', 'gap5',
         )
 
@@ -17,7 +17,7 @@ class FilmLenSerializer(serializers.ModelSerializer):
     class Meta:
         model = FilmLen
         fields = (
-            'pink', 'orange', 'yellow',
+            'id', 'pink', 'orange', 'yellow',
             'green', 'blue',
         )
 
@@ -50,6 +50,4 @@ class FilmSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         pass
-
-
 

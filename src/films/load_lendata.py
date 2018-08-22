@@ -34,7 +34,7 @@ def create_bar_mix(num):
 
 @FACTORYLEN.collect('pie')
 def create_pie():
-    pie = Pie('fail/pass ration)', "數據", title_pos='center')
+    pie = Pie('fail/pass ration', "數據", title_pos='center', width='100%')
     pie.add("", ["紅", ""], [25, 75], center=[10, 30], radius=[18, 24],
             label_pos='center', is_label_show=True, label_text_color=None, )
     pie.add("", ["橘", ""], [24, 76], center=[30, 30], radius=[18, 24],
