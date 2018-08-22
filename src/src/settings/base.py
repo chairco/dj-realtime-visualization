@@ -228,6 +228,7 @@ WERKZEUG_DEBUG = env.bool('WERKZEUG_DEBUG', default=True)
 
 
 # Cache
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -237,14 +238,17 @@ CACHES = {
 
 
 # ECHART settings
+
 DJANGO_ECHARTS = {
     'echarts_version': '4.0.4',
+    'renderer': 'svg',
     'lib_js_host':'cdnjs'
     #'local_host': '{STATIC_URL}echarts'
 }
 
 
 # Channels settings
+
 ASGI_APPLICATION = 'src.routing.application'
 CHANNEL_LAYERS = {
     'default': {
@@ -257,16 +261,17 @@ CHANNEL_LAYERS = {
 }
 
 # Import-export
+
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 # DRF Settings
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     #'DEFAULT_PERMISSION_CLASSES': [
     #    'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     #]
-    
     # Django REST Framework 預設就是使用 JSON，所以不用設定。
     # 使用 session 登入。
     #'DEFAULT_AUTHENTICATION_CLASSES': (

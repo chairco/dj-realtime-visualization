@@ -20,6 +20,7 @@ from django.conf.urls import url
 
 from pages.views.views import index
 from pages.views import views
+
 from films.api.v1 import api_views
 
 from rest_framework import routers
@@ -30,25 +31,25 @@ from rest_framework_swagger.views import get_swagger_view
 schema_view = get_swagger_view(title='API')
 
 v1 = routers.DefaultRouter()
+v1.register(r'films', api_views.FilmViewSet)
 v1.register(r'gaps', api_views.FilmGapViewSet)
 v1.register(r'lens', api_views.FilmLenViewSet)
-
 
 urlpatterns = [
     # App url
     path('', index, name='index'),
-    path('pages/', include('pages.urls')),
     path('films/', include('films.urls')),
+    #path('pages/', include('pages.urls')),
 
     # Build-in url
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 
-    # Rest url
+    # API url
     path('api/v1/', include(v1.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
-    # Doc url
+    # Docs url
     path('docs/', schema_view)
 ]
 
