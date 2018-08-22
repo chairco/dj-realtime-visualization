@@ -76,7 +76,7 @@ class GapBackendEChartsTemplate(EChartsBackendView):
         if name == 'bar':
             return FACTORYGAP.create(name, num=200)
         elif name == 'mix':
-            return FACTORYGAP.create(name, hours=24)
+            return FACTORYGAP.create(name, hours=4)
         return FACTORYGAP.create(name)
 
     def get_template_names(self):

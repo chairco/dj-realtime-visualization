@@ -40,15 +40,15 @@
           <li class="dropdown">
             <a href="#" class="{% if active == 'about' %}active{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">即時訊息</a>
             <ul class="dropdown-menu">
-              <li><a href="/films/async/hello/">pv200 訊息</a></li>
+              <li><a href="/films/async/hello/">檢測即時訊息(PV200)</a></li>
             </ul>
           </li>
           <!-- menu 2-->
           <li class="dropdown">
             <a href="#" class="{% if active == 'about' %}active{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">數據分析</a>
             <ul class="dropdown-menu">
-              <li><a href="{% url 'gap_backend' %}">Gap Backend</a></li>
-              <li><a href="{% url 'len_backend' %}">Len Backend</a></li>
+              <li><a href="{% url 'gap_backend' %}">貼合數據</a></li>
+              <li><a href="{% url 'len_backend' %}">料況數據</a></li>
             </ul>
           </li>
       </ul>
