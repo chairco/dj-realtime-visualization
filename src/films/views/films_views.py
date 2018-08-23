@@ -81,7 +81,7 @@ class FilmLenView(EChartsBackendView):
 
 
 class DashBackendEChartsTemplate(EChartsBackendView):
-    template_name = 'films/backend_charts.html'
+    template_name = 'films/backend_dashcharts.html'
 
     def get_echarts_instance(self, *args, **kwargs):
         name = self.request.GET.get('name', 'dash')
@@ -92,7 +92,7 @@ class DashBackendEChartsTemplate(EChartsBackendView):
 
 
 class GapBackendEChartsTemplate(EChartsBackendView):
-    template_name = 'films/backend_charts.html'
+    template_name = 'films/backend_gapcharts.html'
 
     def get_echarts_instance(self, *args, **kwargs):
         name = self.request.GET.get('name', 'bar')
@@ -105,7 +105,7 @@ class GapBackendEChartsTemplate(EChartsBackendView):
 
 
 class LenBackendEChartsTemplate(EChartsBackendView):
-    template_name = 'films/backend_charts.html'
+    template_name = 'films/backend_lencharts.html'
 
     def get_echarts_instance(self, *args, **kwargs):
         name = self.request.GET.get('name', 'bar')

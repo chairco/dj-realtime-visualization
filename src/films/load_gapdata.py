@@ -15,19 +15,13 @@ from collections import OrderedDict
 FACTORYGAP = ChartFactory()
 
 
-def gen_dates(start, end):
-    while start < end:
-        start += datetime.timedelta(minutes=1)
-        yield start.strftime('%Y-%m-%d %H:%M')
-
-
 @FACTORYGAP.collect('bar')
 def create_bar_mix(num):
     decimal_places = 2
     film_datas = FilmGap.objects.all().order_by('-id')[:num]
     ids = fetch(film_datas.values("id"), "id")
     ids.reverse()
-    bar_mix = Bar("間距(gap)", page_title='(BarMix)', width='100%')
+    bar_mix = Bar("貼合間距", page_title='(BarMix)', width='100%')
     for i in range(0, 6):
         bar_data = fetch(film_datas.values(f"gap{i}"), f"gap{i}")
         bar_data.reverse() # reverse data, change order
@@ -49,7 +43,7 @@ def create_pie():
         'gap0': [1, 1.5], 'gap1': [1.8, 2.3], 'gap2': [1.8, 2.3], 
         'gap3': [1.8, 2.3], 'gap4': [1.8, 2.3], 'gap5': [1, 1.5]
     }
-    pie = Pie('fail/pass ration', "數據", title_pos='center', width='100%')
+    pie = Pie('貼合良率', "數據", title_pos='center', width='100%')
     style = Style()
     pie_style = style.add(
         label_pos="center",

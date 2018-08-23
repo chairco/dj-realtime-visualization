@@ -17,7 +17,7 @@ def create_bar_mix(num):
     ids = fetch(film_datas.values("id"), "id")
     #ids = [ str(f.film) for f in film_datas]
     ids.reverse()
-    bar_mix = Bar("膠條長度(len)", page_title='(BarMix)', width='100%')
+    bar_mix = Bar("膠條長度", page_title='(BarMix)', width='100%')
     for i in range(0, 5):
         bar_data = fetch(film_datas.values(f"{len_map[i]}"), f"{len_map[i]}")
         bar_data.reverse()
@@ -34,7 +34,7 @@ def create_bar_mix(num):
 
 @FACTORYLEN.collect('pie')
 def create_pie():
-    pie = Pie('fail/pass ration', "數據", title_pos='center', width='100%')
+    pie = Pie('膠條良率', "數據", title_pos='center', width='100%')
     pie.add("", ["紅", ""], [25, 75], center=[10, 30], radius=[18, 24],
             label_pos='center', is_label_show=True, label_text_color=None, )
     pie.add("", ["橘", ""], [24, 76], center=[30, 30], radius=[18, 24],
