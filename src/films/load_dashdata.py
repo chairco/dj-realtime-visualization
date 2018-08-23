@@ -50,7 +50,11 @@ def create_dash(hours):
     cam0 = list(data_filter.values())
     
     bar = Bar("產能柱狀圖", height=720)
-    bar.add("cam0", attr, cam0, is_stack=True, is_datazoom_show=True, datazoom_xaxis_index=[0, 1],)
+    bar.add("cam0", attr, cam0, 
+        is_stack=True, 
+        is_datazoom_show=True, 
+        datazoom_xaxis_index=[0, 1],
+    )
 
     line = Line("產能折線圖", title_top="50%")
     line.add(

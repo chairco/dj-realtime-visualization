@@ -40,13 +40,13 @@
           <li class="dropdown">
             <a href="#" class="{% if active == 'about' %}active{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">即時訊息</a>
             <ul class="dropdown-menu">
-              <li><a href="#">儀表板</a></li>
+              <li><a href="{% url 'dash_front' %}">儀表板</a></li>
               <li><a href="/films/async/hello/">檢測訊息(PV200)</a></li>
             </ul>
           </li>
           <!-- menu 2-->
           <li class="dropdown">
-            <a href="#" class="{% if active == 'about' %}active{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">數據分析</a>
+            <a href="#" class="{% if active == 'about' %}active{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">數據訊息</a>
             <ul class="dropdown-menu">
               <li><a href="{% url 'dash_backend' %}">區間產能</a></li>
               <li><a href="{% url 'gap_backend' %}">貼合手臂</a></li>

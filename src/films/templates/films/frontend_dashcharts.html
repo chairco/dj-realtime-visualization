@@ -1,0 +1,60 @@
+{% extends 'films/_base.html' %}
+{% load echarts films_tags %}
+
+{% block content %}
+    <ul class="breadcrumb">
+    {% block bar %}{{ block.super }}
+        <li class="active"><a href="#">{{ view|split }}</a></li>
+        <li class="active">儀表板</li>
+    {% endblock bar %}
+    </ul>
+
+    <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar">
+        <div class="list-group">
+            <a href="javascript:" class="list-group-item" data-echarts-name="dash">即時產能</a>
+        </div>
+    </div>
+    <!--/.sidebar-offcanvas-->
+    <div class="col-xs-12 col-sm-10">
+        <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+        </p>
+        <div id="id_echarts_container" style="height: 500px;"></div>
+    </div>
+    <!--/.col-xs-12.col-sm-9-->
+{% endblock %}
+
+
+{% block extra_script %}
+    <script src="https://cdn.bootcss.com/echarts/3.8.5/echarts.min.js"></script>
+    <script src="http://echarts.baidu.com/asset/map/js/china.js"></script>
+    <script type="text/javascript">
+        var mChart;
+        function loadEcharts(name) {
+            var url = '/films/options/' + name + '/';
+            if (mChart != null) {
+                mChart.clear();
+            }
+            mChart = echarts.init(document.getElementById('id_echarts_container'));
+            mChart.showLoading();
+            $.ajax({
+                url: url,
+                type: "GET",
+                data: null,
+                dataType: "json"
+            }).done(function (data) {
+                mChart.hideLoading();
+                mChart.setOption(data);
+                console.log(data);
+            });
+        }
+        $(document).ready(function () {
+            $('a[data-echarts-name]').on('click', function () {
+                var name = $(this).data('echartsName');
+                loadEcharts(name);
+            });
+            loadEcharts('dash');
+            setInterval( function() { loadEcharts('dash'); }, 20000 ); /* update every 10s*/
+        });
+    </script>
+{% endblock %}
