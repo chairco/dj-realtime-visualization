@@ -1,17 +1,76 @@
-{% extends 'films/_base.html' %}
-{% load echarts films_tags %}
+{% extends 'films/_base.html' %} 
+{% load echarts films_tags %} 
 
 {% block content %}
-    <ul class="breadcrumb">
+<ul class="breadcrumb">
     {% block bar %}{{ block.super }}
-        <li class="active"><a href="#">{{ view|split }}</a></li>
-        <li class="active">儀表板</li>
+    <li class="active"><a href="#">{{ view|split }}</a></li>
+    <li class="active">儀表板</li>
     {% endblock bar %}
-    </ul>
+</ul>
 
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>注意！</strong>顯示為當下到過去 1 小時資料，資料自動更新
+        </div>
+    </div>
+    <!-- alert information-->
+    <div class="col-md-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">過去 1 小時稼動率</h3>
+            </div>
+            <div class="panel-body">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Panel 1-->
+    <div class="col-md-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">稼動率</h3>
+            </div>
+            <div class="panel-body" align="center">
+                <div class="panel2"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Panel 2-->
+    <div class="col-md-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">過去 1 小時累計停機秒數</h3>
+            </div>
+            <div class="panel-body" align="center">
+                <div class="panel3"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Panel 3-->
+    <div class="col-md-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Fail 比率</h3>
+            </div>
+            <div class="panel-body" align="center">
+                <div class="panel4"><strong>None</strong></div>
+            </div>
+        </div>
+    </div>
+    <!-- Panel 4-->
+</div>
+
+<div class="row">
     <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar">
         <div class="list-group">
-            <a href="javascript:" class="list-group-item" data-echarts-name="dash">即時產能</a>
+            <a href="javascript:" class="list-group-item" data-echarts-name="yield">產能</a>
+            <a href="javascript:" class="list-group-item" data-echarts-name="scatter">分佈</a>
         </div>
     </div>
     <!--/.sidebar-offcanvas-->
@@ -19,42 +78,74 @@
         <p class="pull-right visible-xs">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
         </p>
-        <div id="id_echarts_container" style="height: 500px;"></div>
+        <div id="id_echarts_container_yield" style="height: 400px;"></div>
+        <div id="id_echarts_container_scatter" style="height: 300px;"></div>
     </div>
     <!--/.col-xs-12.col-sm-9-->
-{% endblock %}
+</div>
+
+</div>
+
+{% endblock %} 
 
 
 {% block extra_script %}
-    <script src="https://cdn.bootcss.com/echarts/3.8.5/echarts.min.js"></script>
-    <script src="http://echarts.baidu.com/asset/map/js/china.js"></script>
-    <script type="text/javascript">
-        var mChart;
-        function loadEcharts(name) {
-            var url = '/films/options/' + name + '/';
-            if (mChart != null) {
-                mChart.clear();
-            }
-            mChart = echarts.init(document.getElementById('id_echarts_container'));
-            mChart.showLoading();
-            $.ajax({
-                url: url,
-                type: "GET",
-                data: null,
-                dataType: "json"
-            }).done(function (data) {
-                mChart.hideLoading();
-                mChart.setOption(data);
-                console.log(data);
-            });
+<script src="https://cdn.bootcss.com/echarts/3.8.5/echarts.min.js"></script>
+<script src="http://echarts.baidu.com/asset/map/js/china.js"></script>
+<script type="text/javascript">
+var mChart, mChart2;
+
+function loadEcharts(mChart, name) {
+    var template = 'id_echarts_container_' + name
+    var url = '/films/options/' + 'dash_' + name + '/';
+    if (mChart != null) {
+        mChart.clear();
+    }
+    mChart = echarts.init(document.getElementById(template));
+    mChart.showLoading();
+    $.ajax({
+        url: url,
+        type: "GET",
+        data: null,
+        dataType: "json"
+    }).done(function(data) {
+        mChart.hideLoading();
+        mChart.setOption(data);
+        console.log(data);
+    });
+}
+function getstatic(hours) {
+    var url = '/films/static/';
+    $.ajax({
+        url: url,
+        type: "GET",
+        data: null,
+        dataType: "json"
+    }).done(function(data) {
+        console.log(data.last_hour_yield_p);
+        $('.progress-bar').append(data.last_hour_yield_p+'%')
+        $('.progress-bar').css('width', data.last_hour_yield_p+'%').attr('aria-valuenow', data.last_hour_yield_p);
+        $('.panel2').append("<strong><big>"+data.last_hour_yield+"/小時</big></strong>")
+        $('.panel3').append("<strong><big>"+data.downtime+" 秒</big></strong>")
+    })
+}
+$(document).ready(function() {
+    $('a[data-echarts-name]').on('click', function() {
+        var name = $(this).data('echartsName');
+        switch (name) {
+            case 'yield':
+                loadEcharts(mChart, name);
+            case 'scatter':
+                loadEcharts(mChart2, name);
+            default:
+                break;
         }
-        $(document).ready(function () {
-            $('a[data-echarts-name]').on('click', function () {
-                var name = $(this).data('echartsName');
-                loadEcharts(name);
-            });
-            loadEcharts('dash');
-            setInterval( function() { loadEcharts('dash'); }, 20000 ); /* update every 10s*/
-        });
-    </script>
+    });
+    loadEcharts(mChart, 'yield');
+    loadEcharts(mChart2, 'scatter');
+    getstatic(1);
+    setInterval(function() { loadEcharts(mChart, 'yield'); }, 60000); /* update every 6 seconds*/
+    setInterval(function() { getstatic(1); }, 100000); /* update every 10 seconds*/
+});
+</script>
 {% endblock %}

@@ -2,6 +2,7 @@
 from rest_framework import viewsets, status, mixins, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework.request import Request
 
@@ -12,6 +13,7 @@ from films.serializers import (FilmSerializer, FilmGapSerializer,
 from films.models import Film, FilmGap, FilmLen, FilmSeq
 
 import json
+import datetime
 
 
 def get_parameter_dic(request, *args, **kwargs):
@@ -113,6 +115,28 @@ class FilmView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.error_message, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DashStatic(APIView):
+    """
+    A view that returns the count of active users in JSON.
+    """
+    renderer_classes = (JSONRenderer, )
+
+    def get(self, request, format=None):
+        hours = 1
+        st = 780 * hours
+        latest_film = Film.objects.order_by('-rs232_time')[0]
+        last_time = latest_film.rs232_time - datetime.timedelta(hours=hours)
+        last_hour_yield = Film.objects.filter(rs232_time__gte=last_time).count()
+        last_hour_yield_p = last_hour_yield / st * 100
+        downtime = (st - last_hour_yield) * 4
+        content = {
+            'last_hour_yield': last_hour_yield,
+            'last_hour_yield_p': float('%.2f' %last_hour_yield_p),
+            'downtime': float('%.1f' %downtime)
+        }
+        return Response(content)     
 
 
 # below is /api/v1

@@ -1,0 +1,91 @@
+{% extends 'films/_base.html' %}
+
+{% block content %}
+
+    {% if object_list %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Film id</th>
+                    <th>Pic</th>
+                    <th>Type</th>
+                    <th>FilmSeq</th>
+                    <th>Cam No.</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for object in object_list %}
+                    <tr>
+                        <td>{{ object.filmid }}</td>
+                        <td>{{ object.pic }}</td>
+                        <td>{{ object.content_type }}</td>
+                        <td>{{ object.seq }}</td>
+                        <td>{{ object.cam }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if is_paginated %}
+            <div class="pagination">
+                <span class="page-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+                    <span class="page-current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% endif %}
+    {% else %}
+        
+        <h4> No Data</h4>
+    {% endif %}
+
+    <!-- <div class="row">
+    {% if object_list %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>FilmID</th>
+                <th>Pic</th>
+                <th>Type</th>
+                <th>FilmSeq</th>
+                <th>CamNo.</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for object in object_list %}
+            <tr>
+                <td>{{ object.filmid }}</td>
+                <td>{{ object.pic }}</td>
+                <td>{{ object.content_type }}</td>
+                <td>{{ object.seq }}</td>
+                <td>{{ object.cam }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if is_paginated %}
+    <nav aria-label="...">
+        <div class="pagination">
+            <span class="page-links">
+        <ul class="pager">
+        {% if page_obj.has_previous %}
+          <li><a href="?page={{ page_obj.previous_page_number }}">前一頁</a></li>
+            {% endif %}
+              <span class="page-current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+              </span> {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}">下一頁</a></li> {% endif %}
+            </ul>
+            </span>
+        </div>
+    </nav>
+    {% endif %} {% else %}
+    <h4> No Data</h4> {% endif %}
+</div>-->
+{% endblock%}
