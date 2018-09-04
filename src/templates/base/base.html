@@ -36,7 +36,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
 
       <ul class="nav navbar-nav">
-          <!-- menu 1-->
+          <!-- menu 1 -->
           <li class="dropdown">
             <a href="#" class="{% if active == 'about' %}active{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">即時訊息</a>
             <ul class="dropdown-menu">
@@ -44,7 +44,7 @@
               <li><a href="/films/async/hello/">檢測訊息</a></li>
             </ul>
           </li>
-          <!-- menu 2-->
+          <!-- menu 2 -->
           <li class="dropdown">
             <a href="#" class="{% if active == 'about' %}active{% endif %} dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">數據訊息</a>
             <ul class="dropdown-menu">
@@ -53,6 +53,8 @@
               <li><a href="{% url 'len_backend' %}">膠片料況</a></li>
             </ul>
           </li>
+          <!-- menu 3 -->
+          <li><a href="{% url 'search' %}">UnitQuery</a></li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">

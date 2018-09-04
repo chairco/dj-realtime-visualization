@@ -96,6 +96,8 @@ THIRD_PARTY_APPS = (
     'bootstrap3',
     'rest_framework_swagger',
     'import_export',
+    'django_filters',
+    'widget_tweaks',
 )
 
 LOCAL_APPS = (

@@ -27,6 +27,10 @@ django-rest-swagger = "*"
 dj-static = "*"
 pytest-pythonpath = "*"
 pytest-asyncio = "*"
+coreapi = "*"
+pytz = "*"
+django-filter = "*"
+django-widget-tweaks = "*"
 
 [dev-packages]
 

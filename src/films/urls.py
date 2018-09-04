@@ -4,8 +4,11 @@ from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework import routers
 
-from films.views import views, films_views, films_frontend_views
+from films.views import views, films_views, films_frontend_views, search_views
 from films.api.v1 import api_views
+
+from django_filters.views import FilterView
+from films.filters import FilmFilter
 
 
 urlpatterns = [ 
@@ -34,6 +37,11 @@ urlpatterns = [
     
     # cbv list
     url(r'^filmslist/$', films_frontend_views.FilmList.as_view(), name='film_list'),
+
+    # search
+    #url(r'^search/$', search_views.search, name='search'),
+    url(r'^search/$', FilterView.as_view(filterset_class=FilmFilter,
+        template_name='films/search.html'), name='search'),
 ]
 
 apipattern = [

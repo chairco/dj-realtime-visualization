@@ -144,3 +144,4 @@ class NamedChartsView(EChartsBackendView):
         bar.add("設備電量", names, lifes)
         charts = NamedCharts().add_chart(pie, name='pie').add_chart(bar, name='bar')
         return charts
+
