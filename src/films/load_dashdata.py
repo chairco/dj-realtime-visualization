@@ -24,8 +24,13 @@ def gen_dates(start, end):
 
 
 def filmdata_all(hours):
-    latest_film = Film.objects.order_by('-rs232_time')[0]
-    last_time = latest_film.rs232_time - datetime.timedelta(hours=hours) #latest 24h
+    #latest_film = Film.objects.order_by('-rs232_time')[0]
+    #latest_film = latest_film.rs232_time
+    #last_time = latest_film - datetime.timedelta(hours=hours) #latest 1h
+    
+    latest_film = datetime.datetime.now()
+    last_time = latest_film - datetime.timedelta(hours=hours) #latest 1h
+
     film_datas = Film.objects.filter(rs232_time__gte=last_time)
 
     # UTC to +8, using pytz or timedelta
@@ -36,7 +41,7 @@ def filmdata_all(hours):
     grouped = itertools.groupby(film_datas, lambda f: f.rs232_time.astimezone(tzutc_8).strftime("%Y-%m-%d %H:%M"))
     data_records = {day: len(list(g)) for day, g in grouped}
     # get all time interval 
-    data_gaps = {d: 0 for d in gen_dates(last_time.astimezone(tzutc_8), latest_film.rs232_time.astimezone(tzutc_8))}
+    data_gaps = {d: 0 for d in gen_dates(last_time.astimezone(tzutc_8), latest_film.astimezone(tzutc_8))}
     # combine missing time
     data_all = {**data_gaps, **data_records}
     return data_all
@@ -138,8 +143,10 @@ def create_dash_scatter(hours):
     )
     
     order_group_dict = OrderedDict(sorted(groups_dict.items(), key=lambda t: t[0]))
-    vv1 = list(order_group_dict.keys())[:1]
-    vv2 = list(order_group_dict.values())[:1]
+    
+    target = max(order_group_dict.keys())
+    vv1 = [target]
+    vv2 = [order_group_dict.get(target)]
 
     es = EffectScatter()
     es.add(

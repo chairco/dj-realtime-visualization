@@ -1,10 +1,12 @@
 {% extends 'films/_base.html' %} 
 {% load echarts films_tags %} 
 
+{% load staticfiles %}
+
 {% block content %}
 <ul class="breadcrumb">
     {% block bar %}{{ block.super }}
-    <li class="active"><a href="#">{{ view|split }}</a></li>
+    <!--<li class="active"><a href="#">{{ view|split }}</a></li>-->
     <li class="active">儀表板</li>
     {% endblock bar %}
 </ul>
@@ -34,7 +36,7 @@
     <div class="col-md-3">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">稼動率</h3>
+                <h3 class="panel-title">生產率</h3>
             </div>
             <div class="panel-body" align="center">
                 <div class="panel2"></div>
@@ -84,75 +86,12 @@
     <!--/.col-xs-12.col-sm-9-->
 </div>
 
-</div>
-
 {% endblock %} 
 
 
 {% block extra_script %}
 <script src="https://cdn.bootcss.com/echarts/3.8.5/echarts.min.js"></script>
 <script src="http://echarts.baidu.com/asset/map/js/china.js"></script>
-<script type="text/javascript">
-var mChart, mChart2;
-
-function loadEcharts(mChart, name) {
-    var template = 'id_echarts_container_' + name
-    var url = '/films/options/' + 'dash_' + name + '/';
-    if (mChart != null) {
-        mChart.clear();
-    }
-    mChart = echarts.init(document.getElementById(template));
-    mChart.showLoading();
-    $.ajax({
-        url: url,
-        type: "GET",
-        data: null,
-        dataType: "json"
-    }).done(function(data) {
-        mChart.hideLoading();
-        mChart.setOption(data);
-        console.log(data);
-    });
-}
-function getstatic(hours) {
-    var url = '/films/static/';
-    $.ajax({
-        url: url,
-        type: "GET",
-        data: null,
-        dataType: "json"
-    }).done(function(data) {
-        if (data.last_hour_yield_p < 80) {
-            $('.progress-bar').css('width', data.last_hour_yield_p+'%').attr('class', 'progress-bar progress-bar-danger progress-bar-striped').attr('aria-valuenow', data.last_hour_yield_p);
-        } else {
-            $('.progress-bar').css('width', data.last_hour_yield_p+'%').attr('aria-valuenow', data.last_hour_yield_p);
-        }
-        
-        $('.progress-bar').text('');
-        $('.progress-bar').append(data.last_hour_yield_p+'%');
-        $('.panel2').text('');
-        $('.panel2').append("<strong><big>"+data.last_hour_yield+"/小時</big></strong>");
-        $('.panel3').text('');
-        $('.panel3').append("<strong><big>"+data.downtime+" 秒</big></strong>")
-    })
-}
-$(document).ready(function() {
-    $('a[data-echarts-name]').on('click', function() {
-        var name = $(this).data('echartsName');
-        switch (name) {
-            case 'yield':
-                loadEcharts(mChart, name);
-            case 'scatter':
-                loadEcharts(mChart2, name);
-            default:
-                break;
-        }
-    });
-    loadEcharts(mChart, 'yield');
-    loadEcharts(mChart2, 'scatter');
-    getstatic(1);
-    setInterval(function() { loadEcharts(mChart, 'yield'); }, 60000); /* update every 6 seconds*/
-    setInterval(function() { getstatic(1); }, 100000); /* update every 10 seconds*/
-});
-</script>
+<script src="{% static 'films/js/load_chart.js' %}"></script>
+<script src="{% static 'films/js/get_static.js' %}"></script>
 {% endblock %}
