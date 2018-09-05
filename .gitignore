@@ -1,3 +1,10 @@
+# local test file
+client/
+.pytest_cache/
+src/.pytest_cache/
+command.txt
+src/render.html
+
 # Python virtualenv
 [.]venv
 env/

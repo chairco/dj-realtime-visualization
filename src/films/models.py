@@ -98,7 +98,7 @@ class Film(models.Model):
 
     rs232_time = models.DateTimeField(
         blank=True, null=True,
-        verbose_name=_('rs232 time')
+        verbose_name=_('rs232_time')
     )
     
     DISAS_CHOICES = (

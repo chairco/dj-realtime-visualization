@@ -1,126 +1,113 @@
-{# films/templates/async_room.html #}
-{% extends 'films/_base.html' %}
-{% load staticfiles films_tags %}
+{# films/templates/async_room.html #} 
+{% extends 'films/_base.html' %} 
+{% load staticfiles films_tags %} 
 
 {% block extra_css %}
-<link href="{% static 'stylesheets/chat.css' %}" rel="stylesheet">
-{% endblock %}
-
+<link href="{% static 'stylesheets/chat.css' %}" rel="stylesheet"> {% endblock %} 
 
 {% block content %}
-
 <ul class="breadcrumb">
-  {% block bar %}{{ block.super }}
+    {% block bar %}{{ block.super }}
     <li class="active"><a href="{% url 'films_index' %}">Room</a></li>
     <li class="active">{{ room_name_json | replace:'"' }}</li>
-  {% endblock bar %}
+    {% endblock bar %}
 </ul>
 
 <!-- chat -->
-<div class="panel panel-primary">
-  
-  <!--<div class="panel-heading">
-    <span class="glyphicon glyphicon-comment"></span> Message
-  </div>-->
-  
-  <div class="panel-body" id="all_messages">
-    <ul class="chat">
-      {% for message in chat_messages %}
-        {% if message.user == user %}
-          <li class="right clearfix">
-            <span class="chat-img pull-right">
-              <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle"/>
-            </span>
-            
-            <div class="chat-body clearfix">
-              <div class="header">
-                <small class=" text-muted">
-                  <span class="glyphicon glyphicon-time"></span>{{message.created|date:"DATETIME_FORMAT"}}
-                </small>
-                <strong class="pull-right primary-font">{{ message.user }}</strong>
-              </div>
-              <p>{{ message.message|safe }}</p>
-            </div>
-          </li>
-        {% else %}
-          <li class="left clearfix">
-            <span class="chat-img pull-left">
-            <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle"/>
-            </span>
-            
-            <div class="chat-body clearfix">
-              <div class="header">
-                <strong class="primary-font">{{ message.user }}</strong>
-                <small class="pull-right text-muted">
-                  <span class="glyphicon glyphicon-time"></span>{{ message.created|date:"DATETIME_FORMAT"}}
-                </small>
-              </div>
-              <p>{{ message.message|safe }}</p>
-            </div>
-          </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-  </div>
-
-  <div class="panel-footer">
-    <div class="input-group">
-      <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..."/ disabled>
-      <span class="input-group-btn">
-      <button class="btn btn-warning btn-sm" id="btn-chat" disabled>Send</button>
-      </span>
-    </div>
+<div class="col-md-12">
+  <div class="panel panel-primary">
+      <!--<div class="panel-heading">
+      <span class="glyphicon glyphicon-comment"></span> Message
+    </div>-->
+      <div class="panel-body" id="all_messages">
+          <ul class="chat">
+              {% for message in chat_messages %} {% if message.user == user %}
+              <li class="right clearfix">
+                  <span class="chat-img pull-right">
+                <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle"/>
+              </span>
+                  <div class="chat-body clearfix">
+                      <div class="header">
+                          <small class=" text-muted">
+                    <span class="glyphicon glyphicon-time"></span>{{message.created|date:"DATETIME_FORMAT"}}
+                  </small>
+                          <strong class="pull-right primary-font">{{ message.user }}</strong>
+                      </div>
+                      <p>{{ message.message|safe }}</p>
+                  </div>
+              </li>
+              {% else %}
+              <li class="left clearfix">
+                  <span class="chat-img pull-left">
+              <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle"/>
+              </span>
+                  <div class="chat-body clearfix">
+                      <div class="header">
+                          <strong class="primary-font">{{ message.user }}</strong>
+                          <small class="pull-right text-muted">
+                    <span class="glyphicon glyphicon-time"></span>{{ message.created|date:"DATETIME_FORMAT"}}
+                  </small>
+                      </div>
+                      <p>{{ message.message|safe }}</p>
+                  </div>
+              </li>
+              {% endif %} {% endfor %}
+          </ul>
+      </div>
+      <div class="panel-footer">
+          <div class="input-group">
+              <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." / disabled>
+              <span class="input-group-btn">
+        <button class="btn btn-warning btn-sm" id="btn-chat" disabled>Send</button>
+        </span>
+          </div>
+      </div>
   </div>
 </div>
 <!-- end chat -->
-
-{% endblock content%}
-
-
+{% endblock content%} 
 
 {% block extra_script%}
 <script type="text/javascript" src='{% static "js/reconnecting-websocket.js" %}'></script>
+<script type="text/javascript">
+$('#all_messages').scrollTop($('#all_messages')[0].scrollHeight);
+var roomName = {{ room_name_json }};
+var chatSocket = new ReconnectingWebSocket(
+    'ws://' + window.location.host +
+    '/ws/films/async/' + roomName + '/');
 
-<script>
+chatSocket.onmessage = function(e) {
+    var data = JSON.parse(e.data);
+    var message = data['message'];
+    var now_time = data['now_time'];
+    var receive_user = data['user'];
+    var user = "{{user}}";
+    if (receive_user === user) {
+        $('<li class="right clearfix"><span class="chat-img pull-right"><img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle"/></span><div class="chat-body clearfix"><div class="header"><small class=" text-muted"><span class="glyphicon glyphicon-time"></span>' + now_time + '</small><strong class="pull-right primary-font">' + user + '</strong></div><p>' + message + '</p></div></li>').appendTo($('.chat'))
+    } else {
+        $('<li class="left clearfix"><span class="chat-img pull-left"><img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle"/></span><div class="chat-body clearfix"><div class="header"><strong class="primary-font">' + receive_user + '</strong><small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>' + now_time + '</small></div><p>' + message + '</p></div></li>').appendTo($('.chat'))
+    }
     $('#all_messages').scrollTop($('#all_messages')[0].scrollHeight);
-    var roomName = {{ room_name_json }};
-    var chatSocket = new ReconnectingWebSocket(
-      'ws://' + window.location.host +
-      '/ws/films/async/' + roomName + '/');
+};
 
-    chatSocket.onmessage = function (e) {
-        var data = JSON.parse(e.data);
-        var message = data['message'];
-        var now_time = data['now_time'];
-        var receive_user = data['user'];
-        var user = "{{user}}";
-        if (receive_user === user) {
-            $('<li class="right clearfix"><span class="chat-img pull-right"><img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle"/></span><div class="chat-body clearfix"><div class="header"><small class=" text-muted"><span class="glyphicon glyphicon-time"></span>'+now_time+'</small><strong class="pull-right primary-font">'+user+'</strong></div><p>'+message+'</p></div></li>').appendTo($('.chat'))
-        }
-        else{
-            $('<li class="left clearfix"><span class="chat-img pull-left"><img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle"/></span><div class="chat-body clearfix"><div class="header"><strong class="primary-font">'+ receive_user+ '</strong><small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>'+now_time+'</small></div><p>'+message+'</p></div></li>').appendTo($('.chat'))
-        }
-        $('#all_messages').scrollTop($('#all_messages')[0].scrollHeight);
-        };
-    
-    chatSocket.onclose = function (e) {
-        console.error('Chat socket closed unexpectedly');
-    };
-    
-    $("#btn-input").focus();
-    
-    $("#btn-input").keyup(function(e){
-      if (e.keyCode === 13) {  // enter, return
-            $("#btn-chat").click();
-        }
-    });
-    
-    $("#btn-chat").click(function() {
-      var message = $('#btn-input').val();
-      chatSocket.send(JSON.stringify({
-            'message': message
-      }));
-      $('#btn-input').val('');
-    });
+chatSocket.onclose = function(e) {
+    console.error('Chat socket closed unexpectedly');
+};
+
+$("#btn-input").focus();
+
+$("#btn-input").keyup(function(e) {
+    if (e.keyCode === 13) { // enter, return
+        $("#btn-chat").click();
+    }
+});
+
+$("#btn-chat").click(function() {
+    var message = $('#btn-input').val();
+    chatSocket.send(JSON.stringify({
+        'message': message
+    }));
+    $('#btn-input').val('');
+});
 </script>
 {% endblock extra_script %}
