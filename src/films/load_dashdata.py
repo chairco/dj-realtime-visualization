@@ -10,6 +10,7 @@ from films.models import FilmGap, Film
 from films.factory import ChartFactory
 
 from django.db.models import Count, Q
+from django.utils import timezone
 
 from collections import OrderedDict
 
@@ -27,10 +28,9 @@ def filmdata_all(hours):
     #latest_film = Film.objects.order_by('-rs232_time')[0]
     #latest_film = latest_film.rs232_time
     #last_time = latest_film - datetime.timedelta(hours=hours) #latest 1h
-    
-    latest_film = datetime.datetime.now()
-    last_time = latest_film - datetime.timedelta(hours=hours) #latest 1h
-
+    #latest_film = datetime.datetime.now()
+    latest_film = timezone.now()
+    last_time = latest_film - timezone.timedelta(hours=hours) #latest 1h
     film_datas = Film.objects.filter(rs232_time__gte=last_time)
 
     # UTC to +8, using pytz or timedelta

@@ -7,6 +7,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.request import Request
 
 from django.http import QueryDict
+from django.utils import timezone
 
 from films.serializers import (FilmSerializer, FilmGapSerializer, 
                                 FilmLenSerializer, FilmSeqSerializer)
@@ -136,8 +137,10 @@ class DashStatic(APIView):
         st = 780 * hours
         #latest_film = Film.objects.order_by('-rs232_time')[0]
         #latest_film = latest_film.rs232_time
-        latest_film = datetime.datetime.now()
-        last_time = latest_film - datetime.timedelta(hours=hours)
+        #latest_film = datetime.datetime.now()
+        #last_time = latest_film - datetime.timedelta(hours=hours)
+        latest_film = timezone.now()
+        last_time = latest_film - timezone.timedelta(hours=hours) #latest 1h
         last_hour_yield = Film.objects.filter(rs232_time__gte=last_time).count()
         last_hour_yield_p = last_hour_yield / st * 100
         downtime = (st - last_hour_yield) * 4
