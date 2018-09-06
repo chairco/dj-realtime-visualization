@@ -78,7 +78,7 @@ def create_dash(**kwargs):
     hours = kwargs.get('hours')
     if start and end:
         data_all = filmdata_gap(start=start, end=end)
-    if start or end:
+    elif start or end:
         data_all = {}
     else:
         data_all = filmdata_all(hours=hours)
