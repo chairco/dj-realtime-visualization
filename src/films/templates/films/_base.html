@@ -1,6 +1,13 @@
 {# films/_base.html #}
 {% extends 'base.html' %}
 
+{% load staticfiles %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}">
+{% endblock %}
+
+
 {% block main_content %}
 {{ block.super }}
   <div class="row">

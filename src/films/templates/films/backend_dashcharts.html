@@ -1,6 +1,9 @@
 {% extends 'films/_base.html' %}
 {% load echarts films_tags %}
 
+{% load staticfiles %}
+
+
 {% block content %}
     <ul class="breadcrumb">
     {% block bar %}{{ block.super }}
@@ -12,9 +15,7 @@
     <div class="row row-offcanvas row-offcanvas-right">
         <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar">
             <div class="list-group">
-                {% if view|split == "DashBackendEChartsTemplate" %}
-                    <a href="?name=dash" class="list-group-item">產量趨勢圖</a>
-                {% endif %}
+                <a href="?name=dash" class="list-group-item">產量趨勢圖</a>
             </div>
         </div>
         <!--/.sidebar-offcanvas-->
@@ -23,9 +24,39 @@
                 <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
             </p>
             <div class="alert alert-info" role="alert">
-            根據最後一筆資料時間，顯示最近 4 小時產能資料。</br>圖形引擎採用: ECharts 4.0.4 + svg </div>
-            {% echarts_container echarts_instance %}
+            預設顯示近 4 小時產能資料。</br>採用: ECharts 4.0.4 + svg 圖形引擎</div>
+            <!-- alert message -->
 
+            <h4>輸入查詢日期區間</h4>
+            <div class="row">
+                <form action="" method="post">
+                    {% csrf_token %} 
+                    <div class='col-xs-4 col-sm-4'>
+                        <div class="form-group">
+                          <div class='input-group date' id='form_datetime_start'>
+                            <span class="input-group-addon"><span class="input-group-text"></span>開始</span>
+                            <input type='text' name='date_start' class="form-control" />
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                          </div>
+                        </div>
+                    </div>
+                    <div class='col-xs-4 col-sm-4'>
+                        <div class="form-group">
+                          <div class='input-group date' id='form_datetime_end'>
+                            <span class="input-group-addon"><span class="input-group-text"></span>結束</span>
+                            <input type='text' name="date_end" class="form-control" />
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                          </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">查詢</button>
+                </form>
+            </div>
+            <hr>
+            <!-- Data pickle -->
+            {% echarts_container echarts_instance %}
         </div>
         <!--/.col-xs-12.col-sm-9-->
     </div>
@@ -35,4 +66,26 @@
 {% block extra_script %}
   {% echarts_js_dependencies echarts_instance %}
   {% echarts_js_content echarts_instance %}
+  
+  <!--<script type="text/javascript" src="{% static 'base/jquery/jquery-1.8.3.min.js' %}" charset="UTF-8"></script>-->
+
+  <script type="text/javascript"  src="{% static 'bootstrap-datetimepicker/js/bootstrap-datetimepicker.js' %}" charset="UTF-8"></script>
+  
+  <script type="text/javascript" src="{% static 'bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js' %}" charset="UTF-8"></script>
+  
+  <script type="text/javascript">
+
+    $(function () {
+        $('#form_datetime_start').datetimepicker();
+        $('#form_datetime_end').datetimepicker({
+            useCurrent: false //Important! See issue #1075
+        });
+        $("#form_datetime_start").on("dp.change", function (e) {
+            $('#form_datetime_end').data("DateTimePicker").minDate(e.date);
+        });
+        $("#form_datetime_end").on("dp.change", function (e) {
+            $('#form_datetime_start').data("DateTimePicker").maxDate(e.date);
+        });
+    });
+  </script>   
 {% endblock extra_script %}

@@ -5,8 +5,10 @@ from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from django.db.models import Count
 from django.core.serializers.json import DjangoJSONEncoder
+from django.template.context_processors import csrf
 
 from django_echarts.views.backend import EChartsBackendView
+from django_echarts.views.frontend import EChartsFrontView
 
 from pyecharts import Line, Pie, Page, Bar, Boxplot
 
@@ -14,6 +16,9 @@ from films.models import FilmGap, FilmLen, FilmType, Film, Message
 from films.load_gapdata import FACTORYGAP
 from films.load_lendata import FACTORYLEN
 from films.load_dashdata import FACTORYDASH
+from films.forms import DashForm
+
+from django.views.generic import FormView
 
 import json
 
@@ -81,15 +86,22 @@ class FilmLenView(EChartsBackendView):
 
 
 class DashBackendEChartsTemplate(EChartsBackendView):
+    form_class = DashForm
     template_name = 'films/backend_dashcharts.html'
 
     def get_echarts_instance(self, *args, **kwargs):
         name = self.request.GET.get('name', 'dash')
-        return FACTORYDASH.create(name, hours=4)
+        start = self.request.POST.get('date_start')
+        end = self.request.POST.get('date_end')
+        return FACTORYDASH.create(name, hours=4, start=start, end=end)
 
     def get_template_names(self):
         return super().get_template_names()
 
+    def post(self, request):
+        context = self.get_context_data()
+        return super(DashBackendEChartsTemplate, self).render_to_response(context)
+  
 
 class GapBackendEChartsTemplate(EChartsBackendView):
     template_name = 'films/backend_gapcharts.html'

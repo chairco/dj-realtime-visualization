@@ -19,7 +19,7 @@ class ChartFactory:
             if name == 'bar':
                 chart = self._func[name](num)
             elif name in ['dash', 'dash_yield', 'dash_scatter']:
-                chart = self._func[name](hours)
+                chart = self._func[name](**kwargs)
             elif name == 'pie':
                 chart = self._func[name]()
             else:

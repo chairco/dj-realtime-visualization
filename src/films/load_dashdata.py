@@ -24,6 +24,27 @@ def gen_dates(start, end):
         yield start.strftime('%Y-%m-%d %H:%M')
 
 
+def filmdata_gap(start, end):
+    """
+    """
+    # UTC to +8, using pytz or timedelta
+    #tzutc_8 = datetime.timezone(datetime.timedelta(hours=8))
+    tzutc_8 = pytz.timezone('Asia/Taipei')
+
+    start = datetime.datetime.strptime(start, '%Y-%m-%d %H:%M').replace(tzinfo=tzutc_8)
+    end = datetime.datetime.strptime(end, '%Y-%m-%d %H:%M').replace(tzinfo=tzutc_8)
+    film_datas = Film.objects.filter(Q(rs232_time__gte=start),Q(rs232_time__lte=end))
+
+    # count the yield of mins
+    grouped = itertools.groupby(film_datas, lambda f: f.rs232_time.astimezone(tzutc_8).strftime("%Y-%m-%d %H:%M"))
+    data_records = {day: len(list(g)) for day, g in grouped}
+    # get all time interval 
+    data_gaps = {d: 0 for d in gen_dates(start, end)}
+    # combine missing time
+    data_all = {**data_gaps, **data_records}
+    return data_all
+
+
 def filmdata_all(hours):
     #latest_film = Film.objects.order_by('-rs232_time')[0]
     #latest_film = latest_film.rs232_time
@@ -48,11 +69,19 @@ def filmdata_all(hours):
 
 
 @FACTORYDASH.collect('dash')
-def create_dash(hours):
+def create_dash(**kwargs):
     """
     create bar+line to show yield rate in the time interval
     """
-    data_all = filmdata_all(hours=hours)
+    start = kwargs.get('start')
+    end = kwargs.get('end')
+    hours = kwargs.get('hours')
+    if start and end:
+        data_all = filmdata_gap(start=start, end=end)
+    if start or end:
+        data_all = {}
+    else:
+        data_all = filmdata_all(hours=hours)
     # sort data by key
     data_filter = OrderedDict(sorted(data_all.items(), key=lambda t: t[0]))
 
