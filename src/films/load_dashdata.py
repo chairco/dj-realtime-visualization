@@ -143,8 +143,9 @@ def create_dash_scatter(hours):
     )
     
     order_group_dict = OrderedDict(sorted(groups_dict.items(), key=lambda t: t[0]))
-    
-    target = max(order_group_dict.keys())
+    #import operator
+    #target = max(a.items(), key=operator.itemgetter(1))[0]
+    target = max(order_group_dict, key=order_group_dict.get)
     vv1 = [target]
     vv2 = [order_group_dict.get(target)]
 
