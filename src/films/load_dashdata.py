@@ -24,6 +24,22 @@ def gen_dates(start, end):
         yield start.strftime('%Y-%m-%d %H:%M')
 
 
+def filmsgroupy(film_datas, start, end):
+    """
+    """
+    # UTC to +8, using pytz or timedelta
+    #tzutc_8 = datetime.timezone(datetime.timedelta(hours=8))
+    tzutc_8 = pytz.timezone('Asia/Taipei')
+    
+    # count the yield of mins
+    grouped = itertools.groupby(film_datas, lambda f: f.rs232_time.astimezone(tzutc_8).strftime("%Y-%m-%d %H:%M"))
+    data_records = {day: len(list(g)) for day, g in grouped}
+    # get all time interval
+    data_gaps = {d: 0 for d in gen_dates(start, end)}
+    data_all = {**data_gaps, **data_records}
+    return data_all
+
+
 def filmdata_gap(start, end):
     """
     """
@@ -33,8 +49,9 @@ def filmdata_gap(start, end):
 
     start = datetime.datetime.strptime(start, '%Y-%m-%d %H:%M').replace(tzinfo=tzutc_8)
     end = datetime.datetime.strptime(end, '%Y-%m-%d %H:%M').replace(tzinfo=tzutc_8)
-    film_datas = Film.objects.filter(Q(rs232_time__gte=start),Q(rs232_time__lte=end))
+    film_datas = Film.objects.filter(Q(rs232_time__gte=start),Q(rs232_time__lte=end)).order_by('-rs232_time')
 
+    '''
     # count the yield of mins
     grouped = itertools.groupby(film_datas, lambda f: f.rs232_time.astimezone(tzutc_8).strftime("%Y-%m-%d %H:%M"))
     data_records = {day: len(list(g)) for day, g in grouped}
@@ -43,6 +60,9 @@ def filmdata_gap(start, end):
     # combine missing time
     data_all = {**data_gaps, **data_records}
     return data_all
+    '''
+    data_all = filmsgroupy(film_datas, start, end)
+    return data_all
 
 
 def filmdata_all(hours):
@@ -50,10 +70,16 @@ def filmdata_all(hours):
     #latest_film = latest_film.rs232_time
     #last_time = latest_film - datetime.timedelta(hours=hours) #latest 1h
     #latest_film = datetime.datetime.now()
-    latest_film = timezone.now()
-    last_time = latest_film - timezone.timedelta(hours=hours) #latest 1h
-    film_datas = Film.objects.filter(rs232_time__gte=last_time)
+    #tzutc_8 = pytz.timezone('Asia/Taipei')
+    tzutc_8 = pytz.timezone('Asia/Taipei')
 
+    latest_film = timezone.now() #datetime.datetime.strptime('2018-09-07 12:38', '%Y-%m-%d %H:%M').replace(tzinfo=tzutc_8)
+    last_time = latest_film - timezone.timedelta(hours=hours) #latest 1h
+    film_datas = Film.objects.filter(rs232_time__gte=last_time).order_by('-rs232_time')
+
+    start = last_time.astimezone(tzutc_8)
+    end = latest_film.astimezone(tzutc_8)
+    '''
     # UTC to +8, using pytz or timedelta
     #tzutc_8 = datetime.timezone(datetime.timedelta(hours=8))
     tzutc_8 = pytz.timezone('Asia/Taipei')
@@ -65,6 +91,9 @@ def filmdata_all(hours):
     data_gaps = {d: 0 for d in gen_dates(last_time.astimezone(tzutc_8), latest_film.astimezone(tzutc_8))}
     # combine missing time
     data_all = {**data_gaps, **data_records}
+    return data_all
+    '''
+    data_all = filmsgroupy(film_datas, start, end)
     return data_all
 
 
@@ -183,8 +212,24 @@ def create_dash_scatter(hours):
         "稼動es",
         vv1,
         vv2,
-        effect_scale=6,
+        effect_scale=5,
         legend_pos="20%",
+        symbol="diamond",
+    )
+
+    other_vv1 = list(order_group_dict.keys())
+    other_vv1.remove(target)
+    other_vv2 = list(order_group_dict.values())
+    other_vv2.remove(order_group_dict.get(target))
+
+    es.add(
+        "",
+        other_vv1,
+        other_vv2,
+        symbol_size=1,
+        effect_scale=2.5,
+        effect_period=1,
+        symbol="pin",
     )
     
     grid = Grid(width='100%')
