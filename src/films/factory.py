@@ -14,7 +14,6 @@ class ChartFactory:
 
     def create(self, name, **kwargs):
         num = kwargs.get('num')
-        hours = kwargs.get('hours')
         if name in self._func:
             if name == 'bar':
                 chart = self._func[name](num)
