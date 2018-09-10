@@ -1,7 +1,7 @@
 #films/admin.py
 from django.contrib import admin
 
-from .models import Device, FilmParameter
+from pages.models import Device, FilmParameter, Blog
 
 from import_export.admin import ImportExportMixin, ExportActionModelAdmin, ImportExportModelAdmin
 from import_export import resources, widgets, fields
@@ -27,4 +27,12 @@ class FilmParameterAdmin(ImportExportModelAdmin):
     list_display = [
         'gap0', 'gap1', 'gap2', 'gap3', 'gap4', 'gap5',
         'pink', 'orange', 'yellow', 'green', 'blue'
+    ]
+
+
+@admin.register(Blog)
+class BlogAdmin(admin.ModelAdmin):
+    list_display = [
+        'title', 'content',
+        'post_time', 'read_count'
     ]

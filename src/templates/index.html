@@ -10,6 +10,58 @@
           <p>Real-time Data Monitor</p>
           <p><a class="btn btn-primary btn-lg" href="{% url 'dash_front' %}" role="button">Start >></a></p>
         </div>
+        <!-- jumbotron -->
+
+        <div class="page-header">
+          <a class="btn btn-primary pull-right" href="{% url 'blog_add' %}">新增公告</a>
+          <h1>系統公告</h1>
+        </div>
+
+        {% if object_list %}
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>標題</th>
+                <th>內容</th>
+                <th>瀏覽數</th>
+                <th>張貼時間</th>
+                <th>管理員</th>
+              </tr>
+            </thead>
+              <tbody>
+                {% for object in object_list %}
+                  <tr>
+                    <td>{{ object.id }}</td>
+                    <td><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></td>
+                    <td>{{ object.content }}</td>
+                    <td>{{ object.read_count }}</td>
+                    <td>{{ object.post_time }}</td>
+                    <td>{{ object.owner }}</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+          {% if is_paginated %}
+            <div class="pagination">
+                <span class="page-links">
+                    {% if page_obj.has_previous %}
+                        <a href="/?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+                    <span class="page-current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a href="/?page={{ page_obj.next_page_number }}">next</a>
+                    {% endif %}
+                </span>
+            </div>
+          {% endif %}
+        {% else %}
+            <h4>沒有任何公告</h4>
+            <p>測試中</p>
+        {% endif %}
+        <!-- blog -->
     </div>
 </div>
 {% endblock main_content %}

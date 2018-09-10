@@ -1,0 +1,38 @@
+{# pages/blog_formset.html #}
+{% extends 'pages/_base.html' %}
+
+{% load staticfiles crispy_forms_tags %}
+
+
+{% block content %}
+    <ul class="breadcrumb">
+        {% block bar %}{{ block.super }}
+            <li class="active"><a href="{% url 'index' %}">index</a></li>
+            {% if object.title %}
+                <li class="active">{{ object.title }}</li>
+            {% else %}
+                <li class="active">edit</li>
+            {% endif %}
+        {% endblock bar %}
+    </ul>
+
+    <div class="page-header">
+        <h1>{% if form.instance.pk %}編輯{% else %}新增{% endif %}訊息</h1>
+    </div>
+
+    <form action="." method="post">
+        {% csrf_token %}
+        <legend>訊息內容</legend>
+        <div class="Blog">
+         {{ form|crispy }}   
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <!--<section class="progress-demo">
+              <button type="submit" class="btn btn-primary ladda-button" data-style="expand-right">Save</button>
+            </section> -->
+        </div>
+    </form>
+
+{% endblock content %}

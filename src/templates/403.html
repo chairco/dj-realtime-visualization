@@ -1,0 +1,16 @@
+{# 403.html #}
+{% extends 'base.html' %}
+
+{% block title %}403.html {% endblock title %}
+
+{% block main_content %}
+{{ block.super }}
+<div class="container">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="col-xs-6 col-md-2"></div>
+        <div class="col-xs-6 col-md-10">
+            <h2 class="sub-header">Opps！發生 403 錯誤</br><br>你的權限不足。確認是否已經登入或聯繫管理員</h2>
+        </div>
+    </div>
+</div>
+{% endblock main_content %}

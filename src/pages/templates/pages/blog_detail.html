@@ -1,0 +1,21 @@
+{# pages/blog_detail.html #}
+{% extends 'pages/_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        {% block bar %}{{ block.super }}
+            <li class="active"><a href="{% url 'index' %}">index</a></li>
+            <li class="active">{{ object.title }}</li>
+        {% endblock bar %}
+    </ul>
+    <div class="page-header">
+        <a class="btn btn-primary pull-right" href="{% url 'blog_edit' pk=object.pk %}"><i class="icon-edit icon-white"></i>Edit</a>
+        <h1>{{ object.title }}</h1>
+    </div>
+
+    <legend>內容</legend>
+    <p class="lead">{{ object.content }}</p>
+
+    <p>發佈人: {{ object.owner }}<br> 瀏覽數: {{ object.read_count }}</p>
+{% endblock content %}
