@@ -19,7 +19,7 @@ from django.conf import settings
 from django.conf.urls import url
 
 from pages.views.views import index
-from pages.views import views
+from pages.views import views, views_error
 
 from films.api.v1 import api_views
 
@@ -37,9 +37,9 @@ v1.register(r'lens', api_views.FilmLenViewSet)
 
 urlpatterns = [
     # App url
-    path('', index, name='index'),
+    path('', index.as_view(), name='index'),
     path('films/', include('films.urls')),
-    #path('pages/', include('pages.urls')),
+    path('pages/', include('pages.urls')),
 
     # Build-in url
     path('accounts/', include('django.contrib.auth.urls')),
@@ -50,7 +50,10 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     # Docs url
-    path('docs/', schema_view)
+    path('docs/', schema_view),
+
+    # error handle
+    path('403/', views_error.http403, name='403'),
 ]
 
 
