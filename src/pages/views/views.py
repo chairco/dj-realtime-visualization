@@ -89,6 +89,10 @@ class BlogCreateView(FormsetMixin, CreateView):
     model = Blog
     form_class = BlogForm
 
+    @method_decorator(permission_required('pages.delete_blog', login_url='/403/'))
+    def dispatch(self, *args, **kwargs):
+        return super(BlogUpdateView, self).dispatch(*args, **kwargs)
+
 
 class BlogUpdateView(FormsetMixin, UpdateView):
     template_name = 'pages/blog_formset.html'

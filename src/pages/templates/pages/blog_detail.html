@@ -5,7 +5,6 @@
 {% block content %}
     <ul class="breadcrumb">
         {% block bar %}{{ block.super }}
-            <li class="active"><a href="{% url 'index' %}">index</a></li>
             <li class="active">{{ object.title }}</li>
         {% endblock bar %}
     </ul>

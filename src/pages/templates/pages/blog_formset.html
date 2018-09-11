@@ -7,11 +7,10 @@
 {% block content %}
     <ul class="breadcrumb">
         {% block bar %}{{ block.super }}
-            <li class="active"><a href="{% url 'index' %}">index</a></li>
             {% if object.title %}
                 <li class="active">{{ object.title }}</li>
             {% else %}
-                <li class="active">edit</li>
+                <li class="active">Add</li>
             {% endif %}
         {% endblock bar %}
     </ul>

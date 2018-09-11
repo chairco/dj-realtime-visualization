@@ -191,7 +191,6 @@ def create_dash_scatter(hours):
         vv1,
         vv2,
         effect_scale=5,
-        legend_pos="20%",
         symbol="diamond",
     )
 
@@ -201,13 +200,14 @@ def create_dash_scatter(hours):
     other_vv2.remove(order_group_dict.get(target))
 
     es.add(
-        "",
+        "其他稼動es",
         other_vv1,
         other_vv2,
         symbol_size=1,
         effect_scale=2.5,
         effect_period=1,
         symbol="pin",
+        legend_pos="20%",
     )
 
     grid = Grid(width='100%')
