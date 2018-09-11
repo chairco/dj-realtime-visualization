@@ -9,9 +9,9 @@
       <h2 class="form-signin-heading">Please Sign In</h2>
       <p>請登入</p>
       <form method="post">
-      {% csrf_token %}
-      {{ form|crispy }}
-      <button type="submit" class="btn btn-primary">登入</button>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">登入</button>
       </form>
     </div>
   </div>
