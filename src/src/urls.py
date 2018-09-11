@@ -40,6 +40,7 @@ urlpatterns = [
     path('', index.as_view(), name='index'),
     path('films/', include('films.urls')),
     path('pages/', include('pages.urls')),
+    path('users/', include('users.urls')),
 
     # Build-in url
     path('accounts/', include('django.contrib.auth.urls')),
@@ -55,7 +56,6 @@ urlpatterns = [
     # error handle
     path('403/', views_error.http403, name='403'),
 ]
-
 
 if settings.DEBUG:
     import debug_toolbar

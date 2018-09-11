@@ -63,9 +63,11 @@
               {% if user.is_authenticated %}
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{% url 'index' %}">
-                <button class="btn btn-default" type="submit">{{ user }} 登出</button>
+                <a class="btn btn-default" href="#"><span class="glyphicon glyphicon-user"></span> {{ user }}</a>
+                <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-log-out"></span> 登出</button>
               {% else %}
-                <a class="btn btn-default" href="{% url 'login' %}">登入</a>
+                <a class="btn btn-default" href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> 登入</a>
+                <a class="btn btn-default" href="{% url 'register' %}"><span class="glyphicon glyphicon-log-in"></span> 註冊</a>
               {% endif %}
           </form>
       </ul>

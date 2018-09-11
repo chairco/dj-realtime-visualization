@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+<!--{% load bootstrap3 %}-->
+
+{% block title %}Create an account{% endblock %}
+{% block main_content %}
+    <div class="jumbotron">
+        <h1>建立一個帳號</h1>
+        <p>create an account</p>
+    </div>
+
+    <form action="." method="post" class="form">
+        {% csrf_token %}
+        {% bootstrap_form user_form %}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">
+                建立我的帳戶
+            </button>
+        {% endbuttons %}
+    </form>
+{% endblock main_content %}
