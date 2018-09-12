@@ -20,7 +20,11 @@ from films.forms import DashForm
 
 from django.views.generic import FormView
 
+from datetime import datetime
+
 import json
+
+import pytz
 
 
 def dashboard(request, room_name):
@@ -88,6 +92,7 @@ class FilmLenView(EChartsBackendView):
 class DashBackendEChartsTemplate(EChartsBackendView):
     form_class = DashForm
     template_name = 'films/backend_dashcharts.html'
+    tzutc_8 = pytz.timezone('Asia/Taipei')
 
     def get_echarts_instance(self, *args, **kwargs):
         name = self.request.GET.get('name', 'dash')
@@ -102,6 +107,21 @@ class DashBackendEChartsTemplate(EChartsBackendView):
         context = self.get_context_data()
         return super(DashBackendEChartsTemplate, self).render_to_response(context)
   
+    def get_context_data(self, **kwargs):
+        context = super(DashBackendEChartsTemplate, self).get_context_data(**kwargs)
+        start, end = '', ''
+        if 'date_start' in self.request.POST:
+            start = self.request.POST.get('date_start')
+            context['date_start'] = start
+            start = datetime.strptime(start, '%Y-%m-%d %H:%M').replace(tzinfo=self.tzutc_8)
+        if 'date_end' in self.request.POST:
+            end = self.request.POST.get('date_end')
+            context['date_end'] = end
+            end = datetime.strptime(end, '%Y-%m-%d %H:%M').replace(tzinfo=self.tzutc_8)
+        if start and end:
+            context['yields'] = Film.objects.yields(start=start, end=end)
+        return context
+
 
 class GapBackendEChartsTemplate(EChartsBackendView):
     template_name = 'films/backend_gapcharts.html'

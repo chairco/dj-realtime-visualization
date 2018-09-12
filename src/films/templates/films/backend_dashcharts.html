@@ -27,6 +27,12 @@
             預設顯示近 4 小時產能資料。</br>採用: ECharts 4.0.4 + svg 圖形引擎</div>
             <!-- alert message -->
 
+            {% if yields %}
+                <div class="alert alert-success" role="alert">
+                    查詢成功，區間 {{ date_start }} ~ {{ date_end }} 總計產量: {{ yields }}
+                </div>
+            {% endif %}
+            <!-- alert message -->
             <h4>輸入查詢日期區間</h4>
             <div class="row">
                 <form action="" method="post">
@@ -35,7 +41,11 @@
                         <div class="form-group">
                           <div class='input-group date' id='form_datetime_start'>
                             <span class="input-group-addon"><span class="input-group-text"></span>開始</span>
-                            <input type='text' name='date_start' class="form-control" />
+                            {% if date_start %}
+                                <input type='text' name='date_start' class="form-control" value="{{ date_start }}"/>
+                            {% else %}
+                                <input type='text' name='date_start' class="form-control" />
+                            {% endif %}
                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                           </div>
@@ -45,7 +55,11 @@
                         <div class="form-group">
                           <div class='input-group date' id='form_datetime_end'>
                             <span class="input-group-addon"><span class="input-group-text"></span>結束</span>
-                            <input type='text' name="date_end" class="form-control" />
+                            {% if date_end %}
+                                <input type='text' name="date_end" class="form-control" value="{{ date_end }}"/>
+                            {% else %}
+                                <input type='text' name="date_end" class="form-control" />
+                            {% endif %}
                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                           </div>

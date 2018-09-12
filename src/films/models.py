@@ -1,10 +1,14 @@
 # films/models.py
 import uuid
 
+from django.db.models import Count, Q
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+from django.core.validators import (
+    MaxValueValidator, MinValueValidator, RegexValidator
+)
 
 
 class Message(models.Model):
@@ -28,6 +32,7 @@ class FilmType(models.Model):
         max_length=20,
         verbose_name=_('content_type')
     )
+
     class Meta:
         verbose_name = _('FilmType')
         verbose_name_plural = _('FilmTypes')
@@ -54,6 +59,24 @@ class FilmSeq(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+class FilmQueryset(models.QuerySet):
+    """
+    """
+    def yields(self, start, end):
+        yields = self.filter(Q(rs232_time__gte=start), Q(rs232_time__lte=end)).count()
+        return yields 
+
+
+class FilmManager(models.Manager):
+    """
+    """
+    def get_queryset(self):
+        return FilmQueryset(self.model, using=self._db)
+
+    def yields(self, start, end):
+        return self.get_queryset().yields(start, end)
 
 
 class Film(models.Model):
@@ -122,6 +145,9 @@ class Film(models.Model):
         default=timezone.now,
         editable=False
     )
+
+    objects = FilmManager()
+
 
     class Meta:
         verbose_name = _('Film')
