@@ -47,9 +47,9 @@ def filmdata_gap(start, end):
     tzutc_8 = pytz.timezone('Asia/Taipei')
 
     start = datetime.datetime.strptime(
-        start, '%Y-%m-%d %H:%M').replace(tzinfo=tzutc_8)
+        start, '%Y-%m-%d %H:%M').astimezone(tzutc_8)
     end = datetime.datetime.strptime(
-        end, '%Y-%m-%d %H:%M').replace(tzinfo=tzutc_8)
+        end, '%Y-%m-%d %H:%M').astimezone(tzutc_8)
     film_datas = Film.objects.filter(Q(rs232_time__gte=start), Q(
         rs232_time__lte=end)).order_by('-rs232_time')
     data_all = filmsgroupy(film_datas, start, end)
@@ -66,7 +66,6 @@ def filmdata_all(hours):
     last_time = latest_film - timezone.timedelta(hours=hours)  # latest 1h
     film_datas = Film.objects.filter(
         rs232_time__gte=last_time).order_by('-rs232_time')
-
     start = last_time.astimezone(tzutc_8)
     end = latest_film.astimezone(tzutc_8)
     data_all = filmsgroupy(film_datas, start, end)

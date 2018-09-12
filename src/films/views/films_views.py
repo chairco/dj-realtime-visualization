@@ -113,11 +113,11 @@ class DashBackendEChartsTemplate(EChartsBackendView):
         if 'date_start' in self.request.POST:
             start = self.request.POST.get('date_start')
             context['date_start'] = start
-            start = datetime.strptime(start, '%Y-%m-%d %H:%M').replace(tzinfo=self.tzutc_8)
+            start = datetime.strptime(start, '%Y-%m-%d %H:%M').astimezone(self.tzutc_8)
         if 'date_end' in self.request.POST:
             end = self.request.POST.get('date_end')
             context['date_end'] = end
-            end = datetime.strptime(end, '%Y-%m-%d %H:%M').replace(tzinfo=self.tzutc_8)
+            end = datetime.strptime(end, '%Y-%m-%d %H:%M').astimezone(self.tzutc_8)
         if start and end:
             context['yields'] = Film.objects.yields(start=start, end=end)
         return context
