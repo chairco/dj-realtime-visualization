@@ -42,6 +42,7 @@ def filmsgroupy(film_datas, start, end):
 
 def filmdata_gap(start, end):
     """
+    film gap
     """
     # UTC to +8, using pytz or timedelta
     tzutc_8 = pytz.timezone('Asia/Taipei')
@@ -56,16 +57,17 @@ def filmdata_gap(start, end):
     return data_all
 
 
-def filmdata_all(hours):
+def filmdata_all(hours, cam):
     """
+    film data
     """
     # UTC to +8, using pytz or timedelta
     tzutc_8 = pytz.timezone('Asia/Taipei')
-
+    # find data by time
     latest_film = timezone.now()
     last_time = latest_film - timezone.timedelta(hours=hours)  # latest 1h
-    film_datas = Film.objects.filter(
-        rs232_time__gte=last_time).order_by('-rs232_time')
+    film_datas = Film.objects.filter(Q(
+        rs232_time__gte=last_time), Q(cam=cam)).order_by('-rs232_time')
     start = last_time.astimezone(tzutc_8)
     end = latest_film.astimezone(tzutc_8)
     data_all = filmsgroupy(film_datas, start, end)
@@ -123,22 +125,37 @@ def create_dash_yield(hours):
     """
     create bar+line to show yield rate in the time interval
     """
-    data_all = filmdata_all(hours=hours)
-    # sort data by key
-    data_filter = OrderedDict(sorted(data_all.items(), key=lambda t: t[0]))
+    data_cam0 = filmdata_all(hours=hours, cam=0)
+    data_cam1 = filmdata_all(hours=hours, cam=1)
 
-    attr = list(data_filter.keys())
-    cam0 = list(data_filter.values())
+    # sort data by key
+    data_filter_cam0 = OrderedDict(sorted(data_cam0.items(), key=lambda t: t[0]))
+    data_filter_cam1 = OrderedDict(sorted(data_cam0.items(), key=lambda t: t[0]))
+
+    attr_cam0 = list(data_filter_cam0.keys())
+    cam0 = list(data_filter_cam0.values())
+
+    attr_cam1 = list(data_filter_cam1.keys())
+    cam1 = list(data_filter_cam1.values())
 
     bar = Bar("產能柱狀圖", height=720)
     bar.add(
-        "cam0", attr, cam0,
+        "cam0", attr_cam0, cam0,
+        is_stack=True,
+    )
+    bar.add(
+        "cam1", attr_cam0, cam1,
         is_stack=True,
     )
 
     line = Line("產能折線圖", title_top="50%")
     line.add(
-        "cam0", attr, cam0,
+        "cam0", attr_cam0, cam0,
+        mark_point=["max", "min"],
+        mark_line=["average"],
+    )
+    line.add(
+        "cam1", attr_cam1, cam1,
         mark_point=["max", "min"],
         mark_line=["average"],
     )

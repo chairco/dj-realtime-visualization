@@ -135,7 +135,7 @@ class DashStatic(APIView):
     def get(self, request, format=None):
         hours = 1
         # TODO(設定在資料庫)standard yield
-        st = 840 * hours
+        st = 840 * hours * 2
         # now time
         last_time = timezone.now() - timezone.timedelta(hours=hours) #latest 1h
         last_hour_yield = Film.objects.filter(rs232_time__gte=last_time).count()
