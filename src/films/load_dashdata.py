@@ -56,7 +56,7 @@ def filmdata_gap(start, end, cam=None):
             rs232_time__lte=end)).order_by('-rs232_time')
     else:
         film_datas = Film.objects.filter(Q(rs232_time__gte=start), Q(
-        rs232_time__lte=end), Q(cam=cam)).order_by('-rs232_time')
+            rs232_time__lte=end), Q(cam=cam)).order_by('-rs232_time')
     data_all = filmsgroupy(film_datas, start, end)
     return data_all
 
@@ -92,28 +92,52 @@ def create_dash(**kwargs):
     hours = kwargs.get('hours')
     
     if start and end:
-        data_all = filmdata_gap(start=start, end=end)
+        #data_all = filmdata_gap(start=start, end=end)
+        data_cam0 = filmdata_gap(start=start, end=end, cam=0)
+        data_cam1 = filmdata_gap(start=start, end=end, cam=1)
     elif start or end:
-        data_all = {}
+        #data_all = {}
+        data_cam0 = {}
+        data_cam1 = {}
     else:
-        data_all = filmdata_all(hours=hours)
+        #data_all = filmdata_all(hours=hours)
+        data_cam0 = filmdata_all(hours=hours, cam=0)
+        data_cam1 = filmdata_all(hours=hours, cam=1)
     
     # sort data by key
-    data_filter = OrderedDict(sorted(data_all.items(), key=lambda t: t[0]))
+    #data_filter = OrderedDict(sorted(data_all.items(), key=lambda t: t[0]))
+    data_filter_cam0 = OrderedDict(sorted(data_cam0.items(), key=lambda t: t[0]))
+    data_filter_cam1 = OrderedDict(sorted(data_cam1.items(), key=lambda t: t[0]))
 
-    attr = list(data_filter.keys())
-    cam0 = list(data_filter.values())
+    attr_cam0 = list(data_filter_cam0.keys())
+    cam0 = list(data_filter_cam0.values())
+
+    attr_cam1 = list(data_filter_cam1.keys())
+    cam1 = list(data_filter_cam1.values())
+
 
     bar = Bar("產能柱狀圖", height=720)
-    bar.add("cam0", attr, cam0,
+    bar.add("cam0", attr_cam0, cam0,
             is_stack=True,
             is_datazoom_show=True,
             datazoom_xaxis_index=[0, 1],
             )
+    bar.add("cam1", attr_cam1, cam1,
+        is_stack=True,
+        is_datazoom_show=True,
+        datazoom_xaxis_index=[0, 1],
+        )
 
     line = Line("產能折線圖", title_top="50%")
     line.add(
-        "cam0", attr, cam0,
+        "cam0", attr_cam0, cam0,
+        mark_point=["max", "min"],
+        mark_line=["average"],
+        legend_top="50%",
+        is_datazoom_show=True,
+    )
+    line.add(
+        "cam0", attr_cam1, cam1,
         mark_point=["max", "min"],
         mark_line=["average"],
         legend_top="50%",
