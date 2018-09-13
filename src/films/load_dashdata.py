@@ -51,7 +51,7 @@ def filmdata_gap(start, end, cam=None):
         start, '%Y-%m-%d %H:%M').astimezone(tzutc_8)
     end = datetime.datetime.strptime(
         end, '%Y-%m-%d %H:%M').astimezone(tzutc_8)
-    if not cam:
+    if cam == None:
         film_datas = Film.objects.filter(Q(rs232_time__gte=start), Q(
             rs232_time__lte=end)).order_by('-rs232_time')
     else:
@@ -70,12 +70,14 @@ def filmdata_all(hours, cam=None):
     # find data by time
     latest_film = timezone.now()
     last_time = latest_film - timezone.timedelta(hours=hours)  # latest 1h
-    if not cam:
+    
+    if cam == None:
         film_datas = Film.objects.filter(Q(
             rs232_time__gte=last_time)).order_by('-rs232_time')
     else:
         film_datas = Film.objects.filter(Q(
             rs232_time__gte=last_time), Q(cam=cam)).order_by('-rs232_time')
+    
     start = last_time.astimezone(tzutc_8)
     end = latest_film.astimezone(tzutc_8)
     data_all = filmsgroupy(film_datas, start, end)
