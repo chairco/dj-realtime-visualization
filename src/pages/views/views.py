@@ -91,7 +91,7 @@ class BlogCreateView(FormsetMixin, CreateView):
 
     @method_decorator(permission_required('pages.delete_blog', login_url='/403/'))
     def dispatch(self, *args, **kwargs):
-        return super(BlogUpdateView, self).dispatch(*args, **kwargs)
+        return super(BlogCreateView, self).dispatch(*args, **kwargs)
 
 
 class BlogUpdateView(FormsetMixin, UpdateView):
