@@ -139,7 +139,7 @@ def create_dash(**kwargs):
         is_datazoom_show=True,
     )
     line.add(
-        "cam0", attr_cam1, cam1,
+        "cam1", attr_cam1, cam1,
         mark_point=["max", "min"],
         mark_line=["average"],
         legend_top="50%",
@@ -266,3 +266,4 @@ def create_dash_scatter(hours):
     grid.render()
 
     return grid
+
