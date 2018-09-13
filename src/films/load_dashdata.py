@@ -68,7 +68,7 @@ def filmdata_all(hours, cam=None):
     # UTC to +8, using pytz or timedelta
     tzutc_8 = pytz.timezone('Asia/Taipei')
     # find data by time
-    latest_film = timezone.now()
+    latest_film = timezone.now() - timezone.timedelta(minutes=4)
     last_time = latest_film - timezone.timedelta(hours=hours)  # latest 1h
     
     if cam == None:
