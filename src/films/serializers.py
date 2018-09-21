@@ -8,7 +8,7 @@ class FilmGapSerializer(serializers.ModelSerializer):
     class Meta:
         model = FilmGap
         fields = (
-            'id', 'gap0', 'gap1', 'gap2', 
+            'gap0', 'gap1', 'gap2', 
             'gap3', 'gap4', 'gap5',
         )
 
@@ -17,7 +17,7 @@ class FilmLenSerializer(serializers.ModelSerializer):
     class Meta:
         model = FilmLen
         fields = (
-            'id', 'pink', 'orange', 'yellow',
+            'pink', 'orange', 'yellow',
             'green', 'blue',
         )
 

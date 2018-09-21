@@ -35,5 +35,5 @@ $(document).ready(function() {
     loadEcharts(mChart2, 'scatter');
 
     setInterval(function() { loadEcharts(mChart, 'yield'); }, 60000); /* update every 6 seconds*/
-    setInterval(function() { loadEcharts(mChart2, 'scatter'); }, 100000); /* update every 6 seconds*/
+    setInterval(function() { loadEcharts(mChart2, 'scatter'); }, 100000); /* update every 10 seconds*/
 });

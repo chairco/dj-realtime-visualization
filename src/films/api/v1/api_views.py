@@ -64,11 +64,11 @@ class FilmListMixin(mixins.ListModelMixin,
         return self.create(request, *args, **kwargs)
 
 
-class FilmSeqMixin(mixins.ListModelMixin,
-                   mixins.CreateModelMixin,
-                   generics.GenericAPIView):
+class FilmSeqList(mixins.ListModelMixin,
+                  mixins.CreateModelMixin,
+                  generics.GenericAPIView):
     """
-    a class based view(mixins) for creating and fetching film records
+    class based view(mixins) for creating and fetching film seq
     """
     queryset = FilmSeq.objects.all().order_by('seqid')[:100]
     serializer_class = FilmSeqSerializer
@@ -90,10 +90,29 @@ class FilmSeqMixin(mixins.ListModelMixin,
         """
         return self.create(request, *args, **kwargs)
 
+class FilmSeqDetail(mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    generics.GenericAPIView):
+    """
+    Retrieve, update or delete a film seq instance.
+    """
+    queryset = FilmSeq.objects.all()
+    serializer_class = FilmSeqSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
 
 class FilmView(APIView):
     """
-    a class based view for creating and fetching film records
+    class based view for creating and fetching film records
     """
     def get(self, request, format=None):
         """
@@ -124,6 +143,35 @@ class FilmView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.error_message, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FilmViewDetail(APIView):
+    """
+    Retrieve, update or delete a film instance.
+    """
+    def get_object(self, factory_id):
+        try:
+            return Film.objects.get(pk=factory_id)
+        except Film.DoesNotExist:
+            raise Http404
+
+    def get(self, request, factory_id, format=None):
+        film = self.get_object(factory_id)
+        serializer = FilmSerializer(film)
+        return Response(serializer.data)
+
+    def put(self, request, factory_id, format=None):
+        film = self.get_object(factory_id)
+        serializer = FilmSerializer(film, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, factory_id, format=None):
+        film = self.get_object(factory_id)
+        film.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class DashStatic(APIView):

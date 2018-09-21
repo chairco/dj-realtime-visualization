@@ -1,11 +1,14 @@
 # films/models.py
 import uuid
 
-from django.db.models import Count, Q
-from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Count, Q
+
+from django.contrib.auth.models import User
+
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+
 from django.core.validators import (
     MaxValueValidator, MinValueValidator, RegexValidator
 )
@@ -52,6 +55,7 @@ class FilmSeq(models.Model):
         default=timezone.now,
         editable=False
     )
+
     class Meta:
         verbose_name = _('FilmSeq')
         verbose_name_plural = _('FilmSeqs')
@@ -62,21 +66,45 @@ class FilmSeq(models.Model):
 
 
 class FilmQueryset(models.QuerySet):
-    """
-    """
+
     def yields(self, start, end):
-        yields = self.filter(Q(rs232_time__gte=start), Q(rs232_time__lte=end)).count()
-        return yields 
+        yields = self.filter(Q(rs232_time__gte=start),
+                             Q(rs232_time__lte=end)).count()
+        return yields
+
+    def interval(self, start, end, cam):
+        if cam == None:
+            datas = self.filter(Q(rs232_time__gte=start), Q(
+                rs232_time__lte=end)).order_by('-rs232_time')
+        else:
+            datas = self.filter(Q(rs232_time__gte=start), Q(
+                rs232_time__lte=end), Q(cam=cam)).order_by('-rs232_time')
+        
+        return datas
+
+    def gte(self, dt, cam):
+        if cam == None:
+            datas = self.filter(Q(rs232_time__gte=dt)).order_by('-rs232_time')
+        else:
+            datas = self.filter(Q(rs232_time__gte=dt), Q(
+                cam=cam)).order_by('-rs232_time')
+
+        return datas
 
 
 class FilmManager(models.Manager):
-    """
-    """
+
     def get_queryset(self):
         return FilmQueryset(self.model, using=self._db)
 
     def yields(self, start, end):
         return self.get_queryset().yields(start, end)
+
+    def interval(self, start, end, cam):
+        return self.get_queryset().interval(start, end, cam)
+
+    def gte(self, dt, cam):
+        return self.get_queryset().gte(dt, cam)
 
 
 class Film(models.Model):
@@ -109,7 +137,6 @@ class Film(models.Model):
         verbose_name=_('FilmSeqs'),
         on_delete=models.CASCADE,
     )
-
     CAM_CHOICES = (
         (0, _('CAM0')),
         (1, _('CAM1')),
@@ -118,12 +145,11 @@ class Film(models.Model):
         choices=CAM_CHOICES,
         verbose_name=_('CAM NO.'),
     )
-
     rs232_time = models.DateTimeField(
         blank=True, null=True,
         verbose_name=_('rs232_time')
     )
-    
+
     DISAS_CHOICES = (
         ('0', _('FAIL')),
         ('1', _('PASS')),
@@ -140,14 +166,11 @@ class Film(models.Model):
         choices=DISAS_CHOICES,
         verbose_name=_('長度檢驗')
     )
-
     create_time = models.DateTimeField(
         default=timezone.now,
         editable=False
     )
-
     objects = FilmManager()
-
 
     class Meta:
         verbose_name = _('Film')
@@ -159,8 +182,7 @@ class Film(models.Model):
 
 
 class FilmGap(models.Model):
-    """
-    """
+
     film = models.OneToOneField(
         'Film',
         related_name='film_gaps',
@@ -179,7 +201,7 @@ class FilmGap(models.Model):
         verbose_name_plural = _('FilmGaps')
 
     def __str__(self):
-        return str(self.id)
+        return str(self.film)
 
 
 class FilmLen(models.Model):
@@ -202,12 +224,11 @@ class FilmLen(models.Model):
         verbose_name_plural = _('FilmLens')
 
     def __str__(self):
-        return str(self.id)
+        return str(self.film)
 
 
 class FilmWidth(models.Model):
-    """
-    """
+
     film = models.OneToOneField(
         'Film',
         related_name='film_widths',
@@ -226,5 +247,4 @@ class FilmWidth(models.Model):
 
     def __str__(self):
         return str(self.film)
-
 

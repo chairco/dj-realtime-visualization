@@ -41,7 +41,7 @@ class FilmSeqAdmin(admin.ModelAdmin):
 @admin.register(FilmGap)
 class FilmGapAdmin(admin.ModelAdmin):
     list_display = [
-        'film', 'id', 'gap0', 'gap1', 'gap2',
+        'film', 'gap0', 'gap1', 'gap2',
         'gap3', 'gap4', 'gap5'
     ]
 
@@ -49,7 +49,7 @@ class FilmGapAdmin(admin.ModelAdmin):
 @admin.register(FilmLen)
 class FilmLenAdmin(admin.ModelAdmin):
     list_display = [
-        'film', 'id', 'pink', 'orange', 'yellow',
+        'film', 'pink', 'orange', 'yellow',
         'green', 'blue'
     ]
 
