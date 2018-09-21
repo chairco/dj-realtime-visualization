@@ -64,17 +64,40 @@ ALLOWED_HOSTS = ['*']
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+
+if 'DB_NAME' in os.environ:
+    DATABASES = {
+        'default': env.db(
+            'DATABASE_URL_DOCKER', 
+            default='postgres://postgres:password123@db:5432/hopax'
+            #default='postgres://172.18.0.1:5432/hopax'
+        )
+    }
+else:
+    DATABASES = {
+        #'default': {
+        #    'ENGINE': 'django.db.backends.sqlite3',
+        #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        #}
+
+        # Raises ImproperlyConfigured exception if DATABASE_URL not in
+        # os.environ
+        'default': env.db()
+    }
+
+
+'''
 DATABASES = {
-    #'default': {
-    #    'ENGINE': 'django.db.backends.sqlite3',
-    #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    #}
-
-    # Raises ImproperlyConfigured exception if DATABASE_URL not in
-    # os.environ
-    'default': env.db(),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'password123',
+        'HOST': 'db',
+        'PORT': 5432,
+    }
 }
-
+'''
 
 # Application definition
 

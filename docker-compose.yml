@@ -1,6 +1,19 @@
 version: '3'
 services:
-
+    
+    db:
+      container_name: postgres
+      image: postgres
+      restart: always
+      environment:
+        #POSTGRES_USER: postgress
+        POSTGRES_PASSWORD: "password123"
+        POSTGRES_DB: "hopax"
+      ports:
+        - "5431:5432"
+      volumes:
+        - pgdata:/var/lib/postgresql/data/
+    
     nginx:
       container_name: nginx-container
       build: ./nginx
@@ -11,6 +24,7 @@ services:
         - api_data:/docker_api
         - ./log:/var/log/nginx
       depends_on:
+        - app
         - uwsgi
 
     redis:
@@ -26,33 +40,56 @@ services:
     migration:
       build: ./src
       command: bash -c "python manage.py makemigrations && python manage.py migrate"
-      volumes:
-        - api_data:/docker_api
-    
-    app:
-      build: ./src
-      #command: bash -c "python manage.py runserver 0.0.0.0:8003"
-      #command: bash -c "daphne -u daphne.sock --proxy-headers src.asgi:application"
-      command: bash -c "daphne -b 0.0.0.0 -p 8003 --proxy-headers src.asgi:application"
-      restart: always
-      ports:
-        - "8003:8003"
+      env_file:
+        - docker.env
+      #extra_hosts:
+      #  - "db:$DOCKERHOST"
       volumes:
         - api_data:/docker_api
       depends_on:
+        - db
+      #links:
+      #  - db
+    
+    app:
+      container_name: app
+      build: ./src
+      command: bash -c "daphne -b 0.0.0.0 -p 8003 --proxy-headers src.asgi:application"
+      #command: bash -c "python manage.py runserver 0.0.0.0:8003"
+      #command: bash -c "daphne -u daphne.sock --proxy-headers src.asgi:application"
+      restart: always
+      ports:
+        - "8003:8003"
+      #extra_hosts:
+      #  - "db:$DOCKERHOST"
+      env_file:
+        - docker.env
+      volumes:
+        - api_data:/docker_api
+      depends_on:
+        - db
+        - migration
         - redis
 
     uwsgi:
       container_name: uwsgi-container
       build: ./src  
-      restart: always
-      #command: uwsgi  --emperor uwsgi.ini         
-      command: uwsgi --ini src.ini         
+      restart: always        
+      command: uwsgi --ini src.ini #command: uwsgi --emperor uwsgi.ini 
+      env_file:
+        - docker.env         
       ports:
         - "8002:8000"
+      #extra_hosts:
+      #  - "db:$DOCKERHOST"
       volumes:
         - api_data:/docker_api
+      depends_on:
+        - redis
+        - db
+        - migration
 
 volumes:
     api_data:
     redis-data:
+    pgdata:
