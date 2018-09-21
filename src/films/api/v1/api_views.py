@@ -182,13 +182,14 @@ class DashStatic(APIView):
 
     def get(self, request, format=None):
         hours = 1
+        cam = 2
         # TODO(設定在資料庫)standard yield
-        st = 840 * hours * 2
+        st = 840 * hours * cam
         # now time
         last_time = timezone.now() - timezone.timedelta(hours=hours) #latest 1h
         last_hour_yield = Film.objects.filter(rs232_time__gte=last_time).count()
         last_hour_yield_p = last_hour_yield / st * 100
-        downtime = (st - last_hour_yield) * 4
+        downtime = (st - last_hour_yield) * 4 / cam
         content = {
             'last_hour_yield': last_hour_yield,
             'last_hour_yield_p': float('%.2f' %last_hour_yield_p),
