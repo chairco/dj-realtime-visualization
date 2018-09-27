@@ -33,6 +33,7 @@ django-filter = "*"
 django-widget-tweaks = "*"
 "psycopg2-binary" = "==2.7.5"
 "psycopg2" = "==2.7.3.1"
+coverage = "*"
 
 [dev-packages]
 
