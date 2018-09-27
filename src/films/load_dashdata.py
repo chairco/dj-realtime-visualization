@@ -173,10 +173,10 @@ def create_dash(**kwargs):
         datazoom_xaxis_index=[0, 1],
     )
     bar.add("cam1", attr_cam1, cam1,
-            is_stack=True,
-            is_datazoom_show=True,
-            datazoom_xaxis_index=[0, 1],
-            )
+        is_stack=True,
+        is_datazoom_show=True,
+        datazoom_xaxis_index=[0, 1],
+    )
 
     line = Line("產能折線圖", title_top="50%")
     line.add(

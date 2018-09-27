@@ -8,6 +8,7 @@ from rest_framework.request import Request
 
 from django.http import QueryDict
 from django.utils import timezone
+from django.db.models import Count, Q
 
 from films.serializers import (FilmSerializer, FilmGapSerializer, 
                                 FilmLenSerializer, FilmSeqSerializer)
@@ -89,6 +90,7 @@ class FilmSeqList(mixins.ListModelMixin,
         :return: Returns a film record
         """
         return self.create(request, *args, **kwargs)
+
 
 class FilmSeqDetail(mixins.RetrieveModelMixin,
                     mixins.UpdateModelMixin,
@@ -183,23 +185,32 @@ class DashStatic(APIView):
     def get(self, request, format=None):
         hours = 1
         cam = 2
+        
         # TODO(設定在資料庫)standard yield
         st = 840 * hours * cam
-        # now time
-        last_time = timezone.now() - timezone.timedelta(hours=hours) #latest 1h
-        last_hour_yield = Film.objects.filter(rs232_time__gte=last_time).count()
+        
+        # now time(往前4分鐘)
+        timenow = timezone.now() - timezone.timedelta(minutes=4)
+        last_time = timenow - timezone.timedelta(hours=hours) #latest 1h
+
+        last_hour_yield = Film.objects.filter(rs232_time__gte=last_time).count() #Film.objects.gte(dt=last_time, cam=None).count()
         last_hour_yield_p = last_hour_yield / st * 100
-        downtime = (st - last_hour_yield) * 4 / cam
+        downtime = (st - last_hour_yield) * 4 / cam / 60
+
+        cam0_gap = Film.objects.gapfail(dt=last_time, cam=0).count()
+        cam1_gap = Film.objects.gapfail(dt=last_time, cam=1).count()
+
         content = {
             'last_hour_yield': last_hour_yield,
             'last_hour_yield_p': float('%.2f' %last_hour_yield_p),
-            'downtime': float('%.1f' %downtime)
+            'downtime': float('%.1f' %downtime),
+            'cam0_gap': cam0_gap,
+            'cam1_gap': cam1_gap
         }
         return Response(content)     
 
 
 # below is /api/v1
-
 class FilmViewSet(viewsets.ReadOnlyModelViewSet):
     """
     Get all the all film gap records

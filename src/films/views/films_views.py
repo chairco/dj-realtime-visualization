@@ -5,12 +5,11 @@ from django.shortcuts import render
 from django.utils.safestring import mark_safe
 from django.db.models import Count
 from django.core.serializers.json import DjangoJSONEncoder
-from django.template.context_processors import csrf
 
 from django_echarts.views.backend import EChartsBackendView
 from django_echarts.views.frontend import EChartsFrontView
 
-from pyecharts import Line, Pie, Page, Bar, Boxplot
+from pyecharts import Line, Pie, Page, Bar
 
 from films.models import FilmGap, FilmLen, FilmType, Film, Message
 from films.load_gapdata import FACTORYGAP

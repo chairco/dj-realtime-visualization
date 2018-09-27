@@ -3,7 +3,7 @@ import datetime
 import itertools
 
 from borax.fetch import fetch
-from pyecharts import Bar, Pie, Line, Grid, Style
+from pyecharts import Bar, Pie, Line, Grid, Style, Page
 
 from films.models import FilmGap, Film
 from films.factory import ChartFactory
@@ -12,16 +12,20 @@ from django.db.models import Count, Q
 
 from collections import OrderedDict
 
+
 FACTORYGAP = ChartFactory()
 
 
-@FACTORYGAP.collect('bar')
-def create_bar_mix(num):
-    decimal_places = 2
+def archive_create_bar_mix(num):
+    """
+    Ready to delete
+    """
     film_datas = FilmGap.objects.all().order_by('-id')[:num]
+    
     ids = fetch(film_datas.values("id"), "id")
     ids.reverse()
-    bar_mix = Bar("貼合間距", page_title='(BarMix)', width='100%')
+
+    bar_mix = Bar("全部間距", page_title='ALL', width='100%')
     for i in range(0, 6):
         bar_data = fetch(film_datas.values(f"gap{i}"), f"gap{i}")
         bar_data.reverse() # reverse data, change order
@@ -32,8 +36,63 @@ def create_bar_mix(num):
             is_stack=True,
             is_datazoom_show=True
         )
-
     return bar_mix
+
+
+def queryfilm(cam, num):
+    dataset = []
+    cam = Film.objects.filter(cam=cam).order_by('-rs232_time')[:num//2].values()
+    for c in cam:
+        gap_queryset = FilmGap.objects.filter(film=c['filmid']).values_list()
+        gap_queryset = list(gap_queryset[0])[2:]        
+        gap_queryset.append(c['pic'])
+        dataset.append(gap_queryset)
+
+    dataset = list(zip(*dataset))
+    return dataset
+
+
+@FACTORYGAP.collect('bar')
+def create_bar_mix(num):
+    decimal_places = 2
+    
+    # cam0
+    dataset = queryfilm(cam=0, num=num)
+    
+    bar_cam0 = Bar("cam0", page_title='cam0', width='100%')
+    attr = list(dataset[-1])
+    attr.reverse()
+    for i in range(0, 6):
+        gapdata = list(dataset[i])
+        gapdata.reverse()
+        bar_cam0.add(
+            f"gap{i}",
+            attr,
+            list(map(lambda x:round(x, decimal_places), gapdata)),
+            is_stack=True
+        )
+
+    # cam1
+    dataset = queryfilm(cam=1, num=num)
+    
+    bar_cam1 = Bar("cam1", page_title='cam1', title_top="50%")
+    attr = list(dataset[-1])
+    attr.reverse()
+    for i in range(0, 6):
+        gapdata = list(dataset[i])
+        gapdata.reverse()
+        bar_cam1.add(
+            f"gap{i}",
+            attr,
+            list(map(lambda x:round(x, decimal_places), gapdata)),
+            is_stack=True
+        )
+
+    grid = Grid(width='100%')
+    grid.add(bar_cam0, grid_bottom="60%")
+    grid.add(bar_cam1, grid_top="60%")
+    grid.render()
+    return grid
 
 
 @FACTORYGAP.collect('pie')

@@ -91,6 +91,18 @@ class FilmQueryset(models.QuerySet):
 
         return datas
 
+    def gapfail(self, dt, cam):
+        datas = self.filter(Q(rs232_time__gte=dt), Q(
+            cam=cam), Q(gap_ret=0)).order_by('-rs232_time')
+
+        return datas
+
+    def lenfail(self, dt, cam):
+        datas = self.filter(Q(rs232_time__gte=dt), Q(
+            cam=cam), Q(len_ret=0)).order_by('-rs232_time')
+
+        return datas
+
 
 class FilmManager(models.Manager):
 
@@ -105,6 +117,12 @@ class FilmManager(models.Manager):
 
     def gte(self, dt, cam):
         return self.get_queryset().gte(dt, cam)
+
+    def gapfail(self, dt, cam):
+        return self.get_queryset().gapfail(dt, cam)
+
+    def lenfail(self, dt, cam):
+        return self.get_queryset().lenfail(dt, cam)
 
 
 class Film(models.Model):
