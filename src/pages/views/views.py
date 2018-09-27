@@ -9,8 +9,8 @@ from django.contrib.auth.decorators import permission_required
 
 from rest_framework import viewsets
 
-from pages.serializers import UserSerializer, GroupSerializer, FilmGapSerializer
-from pages.models import FilmParameter, Blog
+from pages.serializers import UserSerializer, GroupSerializer
+from pages.models import Blog
 from pages.forms import BlogForm
 
 
@@ -28,14 +28,6 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-
-
-class FilmGapViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows FilmGap to be viewed or edited
-    """
-    queryset = FilmParameter.objects.all()[:100]
-    serializer_class = FilmGapSerializer
 
 
 class FormsetMixin(object):
