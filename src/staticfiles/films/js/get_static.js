@@ -17,7 +17,10 @@ function getstatic(hours) {
         $('.panel2').text('');
         $('.panel2').append("<strong><big>"+data.last_hour_yield+"/小時</big></strong>");
         $('.panel3').text('');
-        $('.panel3').append("<strong><big>"+data.downtime+" 秒</big></strong>")
+        $('.panel3').append("<strong><big>"+data.downtime+" 分</big></strong>")
+        $('.panel4').text('');
+        $('.panel4').append("<strong><big>cam0: "+data.cam0_gap+"<br>cam1: "+data.cam1_gap+"</big></strong>")
+
     })
 }
 $(document).ready(function() {
