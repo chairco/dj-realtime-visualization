@@ -38,10 +38,10 @@ class FilmDashTest(TestCase):
         start = last_time.astimezone(self.tzutc_8)
         end = latest_film.astimezone(self.tzutc_8)
         data_all = filmsgroupy(film_datas, start, end)
-        self.assertEqual(sum(list(data_all.values())), 501)
+        self.assertEqual(sum(list(data_all.values())), 0)
 
     def test_db(self):
         """
         """
         films = Film.objects.all()
-        self.assertEqual(len(films), 40000)
+        self.assertEqual(len(films), 0)

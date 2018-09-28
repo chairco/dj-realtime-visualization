@@ -39,3 +39,4 @@ class FilmsTest(TestCase):
         film = self.create_film()
         self.assertTrue(isinstance(film, Film))
         self.assertEqual(film.__str__(), film.pic)
+
