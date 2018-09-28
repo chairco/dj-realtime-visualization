@@ -46,15 +46,15 @@ urlpatterns = [
 
 apipattern = [
     # api
-    url(r'^films/$', api_views.FilmView.as_view(), name='films_list'),
+    url(r'^films/$', api_views.FilmView.as_view(), name='films_views_api'),
     url(r'^films/(?P<factory_id>[0-9a-f-]+)$', api_views.FilmViewDetail.as_view()),
     # api seq
-    url(r'^filmseq/$', api_views.FilmSeqList.as_view(), name='films_seq_list'),
+    url(r'^filmseq/$', api_views.FilmSeqList.as_view(), name='films_seq_api'),
     url(r'^filmseq/(?P<pk>[0-9a-f-]+)$', api_views.FilmSeqDetail.as_view()),
-    # film mix
-    url(r'^filmsmixin/', api_views.FilmListMixin.as_view(), name='films_list_mixin'),
-    # film static
-    url(r'^static/', api_views.DashStatic.as_view(), name='film_static'),
+    # api mix
+    url(r'^filmsmixin/', api_views.FilmListMixin.as_view(), name='films_mixin_api'),
+    # api statistical
+    url(r'^static/', api_views.DashStatic.as_view(), name='film_statist_api'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns + apipattern)
