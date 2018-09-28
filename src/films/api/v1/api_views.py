@@ -49,6 +49,7 @@ def get_parameter_dic(request, *args, **kwargs):
         return result_data
 
 
+# restframework interface
 class FilmListMixin(mixins.ListModelMixin,
                     mixins.CreateModelMixin,
                     generics.GenericAPIView):
@@ -65,6 +66,8 @@ class FilmListMixin(mixins.ListModelMixin,
         return self.create(request, *args, **kwargs)
 
 
+# below 2 are api for post seqid and delete data from db
+#(TODO:Authentication)
 class FilmSeqList(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
                   generics.GenericAPIView):
@@ -112,6 +115,8 @@ class FilmSeqDetail(mixins.RetrieveModelMixin,
         return self.destroy(request, *args, **kwargs)
 
 
+# below 2 are api for post data to db and delete data from db
+#(TODO:Authentication)
 class FilmView(APIView):
     """
     class based view for creating and fetching film records
@@ -176,6 +181,7 @@ class FilmViewDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# below 1 is api just for fronend
 class DashStatic(APIView):
     """
     A view that returns the count of active users in JSON.
@@ -210,7 +216,7 @@ class DashStatic(APIView):
         return Response(content)     
 
 
-# below is /api/v1
+# below 3 are /api/v1/ for query data(restful framework interface)
 class FilmViewSet(viewsets.ReadOnlyModelViewSet):
     """
     Get all the all film gap records
@@ -237,6 +243,7 @@ class FilmGapViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = FilmGap.objects.all()
     serializer_class = FilmGapSerializer
+    pagination_class = MyFormatResultsSetPagination
 
 
 class FilmLenViewSet(viewsets.ReadOnlyModelViewSet):
@@ -247,3 +254,6 @@ class FilmLenViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = FilmLen.objects.all()
     serializer_class = FilmLenSerializer
+    pagination_class = MyFormatResultsSetPagination
+
+
