@@ -59,7 +59,7 @@ class FilmSeq(models.Model):
     class Meta:
         verbose_name = _('FilmSeq')
         verbose_name_plural = _('FilmSeqs')
-        ordering = ('create_time',)
+        ordering = ('-create_time',)
 
     def __str__(self):
         return str(self.id)
@@ -193,7 +193,7 @@ class Film(models.Model):
     class Meta:
         verbose_name = _('Film')
         verbose_name_plural = _('Films')
-        ordering = ('create_time',)
+        ordering = ('-create_time',)
 
     def __str__(self):
         return str(self.pic)
