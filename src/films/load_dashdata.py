@@ -38,9 +38,8 @@ def filmsgroupy(film_datas, start, end):
     # group by mins, data should be order by rs232 time
     grouped = itertools.groupby(film_datas, lambda f: f.rs232_time.astimezone(
         tzutc_8).strftime("%Y-%m-%d %H:%M"))
-    
-    data_records = {day: len(list(g)) for day, g in grouped}
-    
+
+    data_records = {day: len(list(g)) for day, g in grouped}    
     # get all time interval
     data_gaps = {d: 0 for d in gen_dates(start, end)}
     data_all = {**data_gaps, **data_records}
@@ -79,7 +78,7 @@ def filmdata_all(hours, cam=None):
     timenow = timezone.now() - timezone.timedelta(minutes=4)
     start = timenow - timezone.timedelta(hours=hours)
     film_datas = Film.objects.gte(dt=start, cam=cam)
-    
+
     start = start.astimezone(tp)
     end = timenow.astimezone(tp)
     data_all = filmsgroupy(film_datas, start, end)
@@ -215,7 +214,7 @@ def create_dash_yield(hours):
     data_filter_cam0 = OrderedDict(
         sorted(data_cam0.items(), key=lambda t: t[0]))
     data_filter_cam1 = OrderedDict(
-        sorted(data_cam0.items(), key=lambda t: t[0]))
+        sorted(data_cam1.items(), key=lambda t: t[0]))
 
     attr_cam0 = list(data_filter_cam0.keys())
     cam0 = list(data_filter_cam0.values())
