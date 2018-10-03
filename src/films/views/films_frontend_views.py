@@ -26,9 +26,9 @@ class DashViewStatic(ListView):
         return Film.objects.filter(rs232_time__gte=last_time).count()
 
 
-class DashView(EChartsFrontView):
-    def get_echarts_instance(self, **kwargs):
-        return FACTORYDASH.create('dash', hours=1)
+#class DashView(EChartsFrontView):
+#    def get_echarts_instance(self, **kwargs):
+#        return FACTORYDASH.create('dash', hours=1)
 
 
 class DashViewYield(EChartsFrontView):

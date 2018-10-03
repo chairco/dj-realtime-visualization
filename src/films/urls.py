@@ -31,7 +31,7 @@ urlpatterns = [
     url(r'^front/dash/list/$', films_frontend_views.DashIndex.as_view(), name='dash_front'),
     
     # Options Json for frontend views
-    url(r'options/dash/', films_frontend_views.DashView.as_view()),
+    #url(r'options/dash/', films_frontend_views.DashView.as_view()),
     url(r'options/dash_yield/', films_frontend_views.DashViewYield.as_view()),
     url(r'options/dash_scatter/', films_frontend_views.DashViewScatter.as_view()),
     
@@ -40,8 +40,12 @@ urlpatterns = [
 
     # search
     #url(r'^search/$', search_views.search, name='search'),
-    url(r'^search/$', FilterView.as_view(filterset_class=FilmFilter,
-        template_name='films/search.html'), name='search'),
+    url(r'^search/$', FilterView.as_view(
+        filterset_class=FilmFilter,
+        template_name='films/search.html', 
+        paginate_by=5), name='search'),
+    #url(r'^search/$', search_views.FilmSearch.as_view(), name='search')
+
 ]
 
 apipattern = [

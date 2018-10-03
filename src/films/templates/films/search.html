@@ -3,6 +3,7 @@
 {% load widget_tweaks %}
 
 {% block content %}
+
   <form method="get">
     <div class="well">
       <h4 style="margin-top: 0">Filter</h4>
@@ -25,7 +26,7 @@
       </button>
     </div>
   </form>
-
+  
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -49,10 +50,12 @@
         </tr>
       {% empty %}
         <tr>
-          <td colspan="5">No data</td>
+          <td colspan="6">No results, please enter more condition in forms!</td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
+  
+
 {% endblock %}
 
