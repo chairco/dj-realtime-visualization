@@ -40,7 +40,7 @@ incremental==17.5.0
 itypes==1.1.0
 jdcal==1.4
 Jinja2==2.10
-jupyter-echarts-pypkg==0.1.0
+jupyter-echarts-pypkg==0.1.1
 lml==0.0.2
 MarkupSafe==1.0
 more-itertools==4.3.0

@@ -13,6 +13,9 @@ from django.core.validators import (
     MaxValueValidator, MinValueValidator, RegexValidator
 )
 
+from django.contrib.postgres.indexes import GinIndex
+import django.contrib.postgres.search as pg_search
+
 
 class Message(models.Model):
     """
@@ -49,11 +52,13 @@ class FilmSeq(models.Model):
     Assembly pair
     """
     seqid = models.UUIDField(
-        default=uuid.uuid1
+        default=uuid.uuid1,
+        db_index=True
     )
     create_time = models.DateTimeField(
         default=timezone.now,
-        editable=False
+        editable=False,
+        db_index=True
     )
 
     class Meta:
@@ -132,11 +137,13 @@ class Film(models.Model):
     filmid = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
-        editable=False
+        editable=False,
+        db_index=True
     )
     pic = models.CharField(
         max_length=30,
-        verbose_name=_('pic')
+        verbose_name=_('pic'),
+        db_index=True
     )
     pic_url = models.CharField(
         max_length=30,
@@ -154,6 +161,7 @@ class Film(models.Model):
         related_name='film_seqs',
         verbose_name=_('FilmSeqs'),
         on_delete=models.CASCADE,
+        db_index=True,
     )
     CAM_CHOICES = (
         (0, _('CAM0')),
@@ -186,8 +194,10 @@ class Film(models.Model):
     )
     create_time = models.DateTimeField(
         default=timezone.now,
-        editable=False
+        editable=False,
+        db_index=True
     )
+
     objects = FilmManager()
 
     class Meta:
@@ -206,6 +216,7 @@ class FilmGap(models.Model):
         related_name='film_gaps',
         verbose_name=_('FilmGaps'),
         on_delete=models.CASCADE,
+        db_index=True,
     )
     gap0 = models.FloatField(null=True, blank=True, verbose_name="左邊|粉色")
     gap1 = models.FloatField(null=True, blank=True, verbose_name="粉色|橘色")
@@ -223,13 +234,13 @@ class FilmGap(models.Model):
 
 
 class FilmLen(models.Model):
-    """
-    """
+
     film = models.OneToOneField(
         'Film',
         related_name='film_lens',
         verbose_name=_('FilmLens'),
         on_delete=models.CASCADE,
+        db_index=True,
     )
     pink = models.FloatField(null=True, blank=True, verbose_name="粉色")
     orange = models.FloatField(null=True, blank=True, verbose_name="橘色")
@@ -252,6 +263,7 @@ class FilmWidth(models.Model):
         related_name='film_widths',
         verbose_name=_('FilmWidth'),
         on_delete=models.CASCADE,
+        db_index=True,
     )
     pink = models.FloatField(null=True, blank=True, verbose_name="粉色")
     orange = models.FloatField(null=True, blank=True, verbose_name="橘色")

@@ -36,6 +36,7 @@ class FilmTypeAdmin(admin.ModelAdmin):
 @admin.register(FilmSeq)
 class FilmSeqAdmin(admin.ModelAdmin):
     list_display = ['seqid', 'create_time']
+    list_display_links = None
 
 
 @admin.register(FilmGap)
@@ -44,6 +45,7 @@ class FilmGapAdmin(admin.ModelAdmin):
         'film', 'gap0', 'gap1', 'gap2',
         'gap3', 'gap4', 'gap5'
     ]
+    list_display_links = None
 
 
 @admin.register(FilmLen)
@@ -52,16 +54,19 @@ class FilmLenAdmin(admin.ModelAdmin):
         'film', 'pink', 'orange', 'yellow',
         'green', 'blue'
     ]
+    list_display_links = None
 
 
 @admin.register(Film)
 class FilmAdmin(admin.ModelAdmin):
     list_display = [
-        'filmid', 'pic', 'pic_url',
+        'filmid', 'pic', #'pic_url',
         'content_type', 'seq', 'cam',
         'rs232_time', 'create_time',
     ]
     inlines = (
         FilmGapInline, 
-        FilmLenInline, FilmWidthInline, 
+        FilmLenInline, 
+        FilmWidthInline, 
     )
+
