@@ -72,7 +72,7 @@ six==1.11.0
 sqlparse==0.2.4
 static3==0.7.0
 tablib==0.12.1
-Twisted==18.7.0
+Twisted==19.7.0
 txaio==18.8.1
 unicodecsv==0.14.1
 uritemplate==3.0.0
