@@ -218,3 +218,6 @@ VENV/
 
 # PyCharm
 .idea
+
+# ssl
+ssl.*
