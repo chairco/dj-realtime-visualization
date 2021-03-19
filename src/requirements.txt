@@ -30,7 +30,7 @@ django-filter==2.0.0
 django-import-export==1.0.1
 django-rest-swagger==2.2.0
 django-widget-tweaks==1.4.3
-djangorestframework==3.8.2
+djangorestframework==3.11.2
 et-xmlfile==1.0.1
 future==0.16.0
 hiredis==0.2.0
