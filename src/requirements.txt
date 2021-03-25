@@ -62,7 +62,7 @@ pytest-django==3.4.3
 pytest-pythonpath==0.7.3
 python-dotenv==0.9.1
 pytz==2018.5
-PyYAML==3.13
+PyYAML==5.4
 rcssmin==1.0.6
 requests==2.19.1
 rjsmin==1.0.12
