@@ -23,7 +23,7 @@ django-appconf==1.0.2
 django-bootstrap3==11.0.0
 django-compressor==2.2
 django-crispy-forms==1.7.2
-django-debug-toolbar==1.10.1
+django-debug-toolbar==1.11.1
 django-echarts==0.3.6
 django-environ==0.4.5
 django-filter==2.0.0
