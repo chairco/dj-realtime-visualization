@@ -52,7 +52,7 @@ Pillow==5.2.0
 pluggy==0.7.1
 psycopg2==2.7.5
 psycopg2-binary==2.7.5
-py==1.6.0
+py==1.10.0
 pyecharts==0.4.1
 pyecharts-jupyter-installer==0.0.3
 PyHamcrest==1.9.0
